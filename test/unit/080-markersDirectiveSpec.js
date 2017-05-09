@@ -4,7 +4,7 @@
 /*jshint globalstrict: true*/
 /* jasmine specs for directives go here */
 
-describe('Directive: leaflet', function() {
+describe('Directive: leaflet', function () {
   var $compile;
   var $rootScope;
   var leafletData;
@@ -14,7 +14,7 @@ describe('Directive: leaflet', function() {
 
   mainLayers = mainMarkers = leafletHelpers = leafletData = $rootScope = $compile = void 0;
   beforeEach(module('leaflet-directive'));
-  beforeEach(inject(function(_$compile_, _$rootScope_, _$timeout_, _leafletData_, _leafletHelpers_) {
+  beforeEach(inject(function (_$compile_, _$rootScope_, _$timeout_, _leafletData_, _leafletHelpers_) {
       var $timeout;
       $compile = _$compile_;
       $rootScope = _$rootScope_;
@@ -23,7 +23,7 @@ describe('Directive: leaflet', function() {
       $timeout = _$timeout_;
     }));
 
-  beforeEach(function() {
+  beforeEach(function () {
       mainMarkers = {
         paris: {
           lat: 0.966,
@@ -34,7 +34,7 @@ describe('Directive: leaflet', function() {
           lng: 4.04,
         },
       };
-      return mainLayers = {
+      return !!(mainLayers = {
         baselayers: {
           osm: {
             name: 'OpenStreetMap',
@@ -59,14 +59,14 @@ describe('Directive: leaflet', function() {
             visible: false,
           },
         },
-      };
+      });
     });
 
-  afterEach(inject(function($rootScope) {
+  afterEach(inject(function ($rootScope) {
       return $rootScope.$apply();
     }));
 
-  it('should create main marker on the map', function() {
+  it('should create main marker on the map', function () {
       var element;
       var mainMarker = {
         lat: 0.966,
@@ -81,7 +81,7 @@ describe('Directive: leaflet', function() {
       element = angular.element('<leaflet markers="markers"></leaflet>');
       element = $compile(element)($rootScope);
       $rootScope.$digest();
-      return leafletData.getMarkers().then(function(leafletMarkers) {
+      return leafletData.getMarkers().then(function (leafletMarkers) {
         var leafletMainMarker;
         leafletMainMarker = leafletMarkers.mainMarker;
         expect(leafletMainMarker.getLatLng().lat).toBeCloseTo(0.966);
@@ -89,8 +89,8 @@ describe('Directive: leaflet', function() {
       });
     });
 
-  describe('handles common markers correctly', function() {
-      return xit('markers count should be correct post update with no dupes', function() {
+  describe('handles common markers correctly', function () {
+      return xit('markers count should be correct post update with no dupes', function () {
         var element;
         var markers1 = [
           {
@@ -120,13 +120,13 @@ describe('Directive: leaflet', function() {
         element = angular.element('<leaflet markers="markers"></leaflet>');
         element = $compile(element)($rootScope);
         $rootScope.$digest();
-        return leafletData.getMarkers().then(function(leafletMarkers) {
+        return leafletData.getMarkers().then(function (leafletMarkers) {
           return expect(Object.keys(leafletMarkers).length).toBe(markers1.length);
-        }).then((function(_this) {
-          return function() {
+        }).then((function () {
+          return function () {
             $rootScope.markers = markers2;
             $rootScope.$digest();
-            return leafletData.getMarkers().then(function(leafletMarkers) {
+            return leafletData.getMarkers().then(function (leafletMarkers) {
               return expect(Object.keys(leafletMarkers).length).toBe(markers2.length);
             });
           };
@@ -134,14 +134,14 @@ describe('Directive: leaflet', function() {
       });
     });
 
-  describe('isNested', function() {
-      beforeEach(function() {
+  describe('isNested', function () {
+      beforeEach(function () {
         var mainMarker;
         mainMarker = {
           lat: 0.966,
           lng: 2.02,
         };
-        return this.testRunner = function(postRunnerCb, preRunnerCb) {
+        return !!(this.testRunner = function (postRunnerCb, preRunnerCb) {
           var element;
           var preRunnerRet;
           angular.extend($rootScope, {
@@ -159,44 +159,43 @@ describe('Directive: leaflet', function() {
           element = angular.element('<leaflet markers="markers" markers-nested="true"></leaflet>');
           element = $compile(element)($rootScope);
           $rootScope.$digest();
-          return leafletData.getMarkers().then(function(leafletMarkers) {
+          return leafletData.getMarkers().then(function (leafletMarkers) {
             var leafletMainMarker;
             leafletMainMarker = leafletMarkers.layer1.mainMarker;
             if (postRunnerCb) {
               return postRunnerCb(mainMarker, leafletMainMarker);
             }
           });
-        };
+        });
       });
 
-      afterEach(function() {
-        var self;
+      afterEach(function () {
         var _this = this;
-        return ['testRunner'].forEach(function(key) {
+        return ['testRunner'].forEach(function (key) {
           return delete _this[key];
         });
       });
 
-      it('should create main marker on the map', function() {
-        return this.testRunner(function(mainMarker, leafletMainMarker) {
+      it('should create main marker on the map', function () {
+        return !!(this.testRunner(function (mainMarker, leafletMainMarker) {
           expect(leafletMainMarker.getLatLng().lat).toBeCloseTo(mainMarker.lat);
           return expect(leafletMainMarker.getLatLng().lng).toBeCloseTo(mainMarker.lng);
-        });
+        }));
       });
 
-      return it('should bind popup to main marker if message is given', function() {
-        return this.testRunner((function(mainMarker, leafletMainMarker) {
+      return it('should bind popup to main marker if message is given', function () {
+        return !!(this.testRunner(function (mainMarker, leafletMainMarker) {
           return expect(leafletMainMarker._popup._content).toEqual(mainMarker.message);
-        }), function(mainMarker) {
+        }, function (mainMarker) {
 
           return angular.extend(mainMarker, {
             message: 'this is paris',
           });
-        });
+        }));
       });
     });
 
-  it('should bind popup to main marker if message is given', function() {
+  it('should bind popup to main marker if message is given', function () {
       var element;
       var marker = {
         lat: 0.966,
@@ -212,14 +211,14 @@ describe('Directive: leaflet', function() {
       element = angular.element('<leaflet markers="markers"></leaflet>');
       element = $compile(element)($rootScope);
       $rootScope.$digest();
-      return leafletData.getMarkers().then(function(leafletMarkers) {
+      return leafletData.getMarkers().then(function (leafletMarkers) {
         var leafletMainMarker;
         leafletMainMarker = leafletMarkers.marker;
         return expect(leafletMainMarker._popup._content).toEqual('this is paris');
       });
     });
 
-  it('message should be compiled if angular template is given', function() {
+  it('message should be compiled if angular template is given', function () {
       var element;
       var leafletMainMarker;
       var marker = {
@@ -242,8 +241,8 @@ describe('Directive: leaflet', function() {
       element = $compile(element)($rootScope);
       $rootScope.$digest();
       leafletMainMarker = void 0;
-      leafletData.getMarkers().then(function(leafletMarkers) {
-        return leafletMainMarker = leafletMarkers.marker;
+      leafletData.getMarkers().then(function (leafletMarkers) {
+        return !!(leafletMainMarker = leafletMarkers.marker);
       });
 
       $rootScope.$digest();
@@ -252,7 +251,7 @@ describe('Directive: leaflet', function() {
       return expect(leafletMainMarker._popup._contentNode.innerHTML).toEqual('<p class="ng-binding">blue</p>');
     });
 
-  it('message should be compiled in specified scope', function() {
+  it('message should be compiled in specified scope', function () {
       var arbitraryIsolateScope;
       var element;
       var leafletMainMarker;
@@ -266,7 +265,7 @@ describe('Directive: leaflet', function() {
       marker = {
         lat: 0.966,
         lng: 2.02,
-        getMessageScope: function() {
+        getMessageScope: function () {
           return arbitraryIsolateScope;
         },
 
@@ -282,8 +281,8 @@ describe('Directive: leaflet', function() {
       element = $compile(element)($rootScope);
       $rootScope.$digest();
       leafletMainMarker = void 0;
-      leafletData.getMarkers().then(function(leafletMarkers) {
-        return leafletMainMarker = leafletMarkers.marker;
+      leafletData.getMarkers().then(function (leafletMarkers) {
+        return !!(leafletMainMarker = leafletMarkers.marker);
       });
 
       $rootScope.$digest();
@@ -292,7 +291,7 @@ describe('Directive: leaflet', function() {
       return expect(leafletMainMarker._popup._contentNode.innerHTML).toEqual('<p class="ng-binding">angular</p>');
     });
 
-  it('should bind label to main marker if message is given', function() {
+  it('should bind label to main marker if message is given', function () {
       var element;
       var marker;
       spyOn(leafletHelpers.LabelPlugin, 'isLoaded').and.returnValue(true);
@@ -300,14 +299,14 @@ describe('Directive: leaflet', function() {
         includes: L.Mixin.Events,
       });
       L.BaseMarkerMethods = {
-        bindLabel: function(content, options) {
+        bindLabel: function (content, options) {
           this.label = new L.Label(options, this);
           this.label._content = content;
           return this;
         },
 
-        updateLabelContent: function(content) {
-          return this.label._content = content;
+        updateLabelContent: function (content) {
+          return !!(this.label._content = content);
         },
       };
       L.Marker.include(L.BaseMarkerMethods);
@@ -330,7 +329,7 @@ describe('Directive: leaflet', function() {
       element = angular.element('<leaflet markers="markers"></leaflet>');
       $compile(element)($rootScope);
       $rootScope.$digest();
-      leafletData.getMarkers().then(function(leafletMarkers) {
+      leafletData.getMarkers().then(function (leafletMarkers) {
         var leafletMainMarker;
         leafletMainMarker = leafletMarkers.marker;
         return expect(leafletMainMarker.label._content).toEqual('original');
@@ -338,14 +337,14 @@ describe('Directive: leaflet', function() {
 
       marker.label.message = 'new';
       $rootScope.$digest();
-      return leafletData.getMarkers().then(function(leafletMarkers) {
+      return leafletData.getMarkers().then(function (leafletMarkers) {
         var leafletMainMarker;
         leafletMainMarker = leafletMarkers.marker;
         return expect(leafletMainMarker.label._content).toEqual('new');
       });
     });
 
-  it('should create markers on the map', function() {
+  it('should create markers on the map', function () {
       var element;
       angular.extend($rootScope, {
         markers: mainMarkers,
@@ -353,7 +352,7 @@ describe('Directive: leaflet', function() {
       element = angular.element('<leaflet markers="markers"></leaflet>');
       element = $compile(element)($rootScope);
       $rootScope.$digest();
-      return leafletData.getMarkers().then(function(leafletMarkers) {
+      return leafletData.getMarkers().then(function (leafletMarkers) {
         expect(leafletMarkers.paris.getLatLng().lat).toBeCloseTo(0.966);
         expect(leafletMarkers.paris.getLatLng().lng).toBeCloseTo(2.02);
         expect(leafletMarkers.madrid.getLatLng().lat).toBeCloseTo(2.02);
@@ -361,9 +360,9 @@ describe('Directive: leaflet', function() {
       });
     });
 
-  describe('when a marker is updated', function() {
-      describe('detecting errors in lat-lng', function() {
-        it('validates (undefined lat)', function() {
+  describe('when a marker is updated', function () {
+      describe('detecting errors in lat-lng', function () {
+        it('validates (undefined lat)', function () {
           var element;
           var map;
           var markers;
@@ -373,13 +372,13 @@ describe('Directive: leaflet', function() {
           element = angular.element('<leaflet markers="markers"></leaflet>');
           element = $compile(element)($rootScope);
           map = void 0;
-          map = leafletData.getMap().then(function(leafletMap) {
-            return map = leafletMap;
+          map = leafletData.getMap().then(function (leafletMap) {
+            return !!(map = leafletMap);
           });
 
           markers = void 0;
-          leafletData.getMarkers().then(function(leafletMarkers) {
-            return markers = leafletMarkers;
+          leafletData.getMarkers().then(function (leafletMarkers) {
+            return !!(markers = leafletMarkers);
           });
 
           $rootScope.$digest();
@@ -389,7 +388,7 @@ describe('Directive: leaflet', function() {
           return expect(map.hasLayer(markers.madrid)).toBe(false);
         });
 
-        it('validates (null lat)', function() {
+        it('validates (null lat)', function () {
           var element;
           var map;
           var markers;
@@ -399,13 +398,13 @@ describe('Directive: leaflet', function() {
           element = angular.element('<leaflet markers="markers"></leaflet>');
           element = $compile(element)($rootScope);
           map = void 0;
-          leafletData.getMap().then(function(leafletMap) {
+          leafletData.getMap().then(function (leafletMap) {
             map = leafletMap;
           });
 
           markers = void 0;
-          leafletData.getMarkers().then(function(leafletMarkers) {
-            return markers = leafletMarkers;
+          leafletData.getMarkers().then(function (leafletMarkers) {
+            return !!(markers = leafletMarkers);
           });
 
           $rootScope.$digest();
@@ -415,7 +414,7 @@ describe('Directive: leaflet', function() {
           return expect(map.hasLayer(markers.madrid)).toBe(false);
         });
 
-        it('validate (lat is NaN)', function() {
+        it('validate (lat is NaN)', function () {
           var element;
           var map;
           var markers;
@@ -425,13 +424,13 @@ describe('Directive: leaflet', function() {
           element = angular.element('<leaflet markers="markers"></leaflet>');
           element = $compile(element)($rootScope);
           map = void 0;
-          leafletData.getMap().then(function(leafletMap) {
-            return map = leafletMap;
+          leafletData.getMap().then(function (leafletMap) {
+            return !!(map = leafletMap);
           });
 
           markers = void 0;
-          leafletData.getMarkers().then(function(leafletMarkers) {
-            return markers = leafletMarkers;
+          leafletData.getMarkers().then(function (leafletMarkers) {
+            return !!(markers = leafletMarkers);
           });
 
           $rootScope.$digest();
@@ -441,7 +440,7 @@ describe('Directive: leaflet', function() {
           return expect(map.hasLayer(markers.madrid)).toBe(false);
         });
 
-        it('validates (lat not a number)', function() {
+        it('validates (lat not a number)', function () {
           var element;
           var map;
           var markers;
@@ -451,13 +450,13 @@ describe('Directive: leaflet', function() {
           element = angular.element('<leaflet markers="markers"></leaflet>');
           element = $compile(element)($rootScope);
           map = void 0;
-          leafletData.getMap().then(function(leafletMap) {
-            return map = leafletMap;
+          leafletData.getMap().then(function (leafletMap) {
+            return !!(map = leafletMap);
           });
 
           markers = void 0;
-          leafletData.getMarkers().then(function(leafletMarkers) {
-            return markers = leafletMarkers;
+          leafletData.getMarkers().then(function (leafletMarkers) {
+            return !!(markers = leafletMarkers);
           });
 
           $rootScope.$digest();
@@ -467,7 +466,7 @@ describe('Directive: leaflet', function() {
           return expect(map.hasLayer(markers.madrid)).toBe(false);
         });
 
-        it('validates (undefined lng)', function() {
+        it('validates (undefined lng)', function () {
           var element;
           var map;
           var markers;
@@ -477,13 +476,13 @@ describe('Directive: leaflet', function() {
           element = angular.element('<leaflet markers="markers"></leaflet>');
           element = $compile(element)($rootScope);
           map = void 0;
-          leafletData.getMap().then(function(leafletMap) {
-            return map = leafletMap;
+          leafletData.getMap().then(function (leafletMap) {
+            return !!(map = leafletMap);
           });
 
           markers = void 0;
-          leafletData.getMarkers().then(function(leafletMarkers) {
-            return markers = leafletMarkers;
+          leafletData.getMarkers().then(function (leafletMarkers) {
+            return !!(markers = leafletMarkers);
           });
 
           $rootScope.$digest();
@@ -493,7 +492,7 @@ describe('Directive: leaflet', function() {
           return expect(map.hasLayer(markers.madrid)).toBe(false);
         });
 
-        it('validates (null lng)', function() {
+        it('validates (null lng)', function () {
           var element;
           var map;
           var markers;
@@ -503,13 +502,13 @@ describe('Directive: leaflet', function() {
           element = angular.element('<leaflet markers="markers"></leaflet>');
           element = $compile(element)($rootScope);
           map = void 0;
-          leafletData.getMap().then(function(leafletMap) {
-            return map = leafletMap;
+          leafletData.getMap().then(function (leafletMap) {
+            return !!(map = leafletMap);
           });
 
           markers = void 0;
-          leafletData.getMarkers().then(function(leafletMarkers) {
-            return markers = leafletMarkers;
+          leafletData.getMarkers().then(function (leafletMarkers) {
+            return !!(markers = leafletMarkers);
           });
 
           $rootScope.$digest();
@@ -519,7 +518,7 @@ describe('Directive: leaflet', function() {
           return expect(map.hasLayer(markers.madrid)).toBe(false);
         });
 
-        it('validates (lng is NaN)', function() {
+        it('validates (lng is NaN)', function () {
           var element;
           var map;
           var markers;
@@ -529,13 +528,13 @@ describe('Directive: leaflet', function() {
           element = angular.element('<leaflet markers="markers"></leaflet>');
           element = $compile(element)($rootScope);
           map = void 0;
-          leafletData.getMap().then(function(leafletMap) {
-            return map = leafletMap;
+          leafletData.getMap().then(function (leafletMap) {
+            return !!(map = leafletMap);
           });
 
           markers = void 0;
-          leafletData.getMarkers().then(function(leafletMarkers) {
-            return markers = leafletMarkers;
+          leafletData.getMarkers().then(function (leafletMarkers) {
+            return !!(markers = leafletMarkers);
           });
 
           $rootScope.$digest();
@@ -545,7 +544,7 @@ describe('Directive: leaflet', function() {
           expect(map.hasLayer(markers.madrid)).toBe(false);
         });
 
-        it('validates (lng not a number)', function() {
+        it('validates (lng not a number)', function () {
           var element;
           var map;
           var markers;
@@ -555,12 +554,12 @@ describe('Directive: leaflet', function() {
           element = angular.element('<leaflet markers="markers"></leaflet>');
           element = $compile(element)($rootScope);
           map = void 0;
-          leafletData.getMap().then(function(leafletMap) {
+          leafletData.getMap().then(function (leafletMap) {
             map = leafletMap;
           });
 
           markers = void 0;
-          leafletData.getMarkers().then(function(leafletMarkers) {
+          leafletData.getMarkers().then(function (leafletMarkers) {
             markers = leafletMarkers;
           });
 
@@ -571,7 +570,7 @@ describe('Directive: leaflet', function() {
           return expect(map.hasLayer(markers.madrid)).toBe(false);
         });
 
-        it('validates (lng not a number) for a marker in a layer group', function() {
+        it('validates (lng not a number) for a marker in a layer group', function () {
           var element;
           var layers;
           var map;
@@ -586,19 +585,19 @@ describe('Directive: leaflet', function() {
           element = angular.element('<leaflet markers="markers" layers="layers"></leaflet>');
           element = $compile(element)($rootScope);
           map = void 0;
-          leafletData.getMap().then(function(leafletMap) {
-            return map = leafletMap;
+          leafletData.getMap().then(function (leafletMap) {
+            return !!(map = leafletMap);
           });
 
           markers = void 0;
-          leafletData.getMarkers().then(function(leafletMarkers) {
-            return markers = leafletMarkers;
+          leafletData.getMarkers().then(function (leafletMarkers) {
+            return !!(markers = leafletMarkers);
           });
 
           $rootScope.$digest();
           layers = void 0;
-          leafletData.getLayers().then(function(leafletLayers) {
-            return layers = leafletLayers;
+          leafletData.getLayers().then(function (leafletLayers) {
+            return !!(layers = leafletLayers);
           });
 
           $rootScope.$digest();
@@ -619,7 +618,7 @@ describe('Directive: leaflet', function() {
           return expect(overlays.cars.hasLayer(markers.paris)).toBe(false);
         });
 
-        return it('validates (lng not a number) for a marker in a layer markercluster', function() {
+        return it('validates (lng not a number) for a marker in a layer markercluster', function () {
           var element;
           var layers;
           var map;
@@ -636,19 +635,19 @@ describe('Directive: leaflet', function() {
           element = angular.element('<leaflet markers="markers" layers="layers"></leaflet>');
           element = $compile(element)($rootScope);
           map = void 0;
-          leafletData.getMap().then(function(leafletMap) {
-            return map = leafletMap;
+          leafletData.getMap().then(function (leafletMap) {
+            return !!(map = leafletMap);
           });
 
           markers = void 0;
-          leafletData.getMarkers().then(function(leafletMarkers) {
-            return markers = leafletMarkers;
+          leafletData.getMarkers().then(function (leafletMarkers) {
+            return !!(markers = leafletMarkers);
           });
 
           $rootScope.$digest();
           layers = void 0;
-          leafletData.getLayers().then(function(leafletLayers) {
-            return layers = leafletLayers;
+          leafletData.getLayers().then(function (leafletLayers) {
+            return !!(layers = leafletLayers);
           });
 
           $rootScope.$digest();
@@ -668,7 +667,7 @@ describe('Directive: leaflet', function() {
         });
       });
 
-      it('updates lat-lng', function() {
+      it('updates lat-lng', function () {
         var element;
         var layers;
         var map;
@@ -679,19 +678,19 @@ describe('Directive: leaflet', function() {
         element = angular.element('<leaflet markers="markers"></leaflet>');
         element = $compile(element)($rootScope);
         map = void 0;
-        leafletData.getMap().then(function(leafletMap) {
-          return map = leafletMap;
+        leafletData.getMap().then(function (leafletMap) {
+          return !!(map = leafletMap);
         });
 
         markers = void 0;
-        leafletData.getMarkers().then(function(leafletMarkers) {
-          return markers = leafletMarkers;
+        leafletData.getMarkers().then(function (leafletMarkers) {
+          return !!(markers = leafletMarkers);
         });
 
         $rootScope.$digest();
         layers = void 0;
-        leafletData.getLayers().then(function(leafletLayers) {
-          return layers = leafletLayers;
+        leafletData.getLayers().then(function (leafletLayers) {
+          return !!(layers = leafletLayers);
         });
 
         $rootScope.$digest();
@@ -710,7 +709,7 @@ describe('Directive: leaflet', function() {
         return expect(markers.madrid.getLatLng().lng).toBeCloseTo(1.23);
       });
 
-      return it('updates lat-lng for marker in a layer markercluster', function() {
+      return it('updates lat-lng for marker in a layer markercluster', function () {
         var element;
         var layers;
         var map;
@@ -727,18 +726,18 @@ describe('Directive: leaflet', function() {
         element = angular.element('<leaflet markers="markers" layers="layers"></leaflet>');
         element = $compile(element)($rootScope);
         map = void 0;
-        leafletData.getMap().then(function(leafletMap) {
-          return map = leafletMap;
+        leafletData.getMap().then(function (leafletMap) {
+          return !!(map = leafletMap);
         });
 
         markers = void 0;
-        leafletData.getMarkers().then(function(leafletMarkers) {
-          return markers = leafletMarkers;
+        leafletData.getMarkers().then(function (leafletMarkers) {
+          return !!(markers = leafletMarkers);
         });
 
         layers = void 0;
-        leafletData.getLayers().then(function(leafletLayers) {
-          return layers = leafletLayers;
+        leafletData.getLayers().then(function (leafletLayers) {
+          return !!(layers = leafletLayers);
         });
 
         $rootScope.$digest();
@@ -767,7 +766,7 @@ describe('Directive: leaflet', function() {
       });
     });
 
-  it('should bind popup to marker if message is given', function() {
+  it('should bind popup to marker if message is given', function () {
       var element;
       var map;
       var markers;
@@ -778,12 +777,12 @@ describe('Directive: leaflet', function() {
       element = angular.element('<leaflet markers="markers"></leaflet>');
       element = $compile(element)($rootScope);
       map = void 0;
-      leafletData.getMap().then(function(leafletMap) {
+      leafletData.getMap().then(function (leafletMap) {
         map = leafletMap;
       });
 
       markers = void 0;
-      leafletData.getMarkers().then(function(leafletMarkers) {
+      leafletData.getMarkers().then(function (leafletMarkers) {
         markers = leafletMarkers;
       });
 
@@ -791,7 +790,7 @@ describe('Directive: leaflet', function() {
       expect(markers.paris._popup._content).toEqual('this is paris');
     });
 
-  return describe('setting markers watches', function() {
+  return describe('setting markers watches', function () {
     var DEFAULT_URL;
     var LEAF_URL;
     var defaultIcon;
@@ -804,7 +803,7 @@ describe('Directive: leaflet', function() {
     scope = void 0;
     LEAF_URL = 'http://leafletjs.com/docs/images/leaf-green.png';
     DEFAULT_URL = 'http://cdn.leafletjs.com/leaflet-0.5.1/images/marker-icon.png';
-    beforeEach(function() {
+    beforeEach(function () {
         leafIcon = {
           iconUrl: LEAF_URL,
           shadowUrl: 'http://leafletjs.com/docs/images/leaf-shadow.png',
@@ -831,18 +830,18 @@ describe('Directive: leaflet', function() {
           },
         };
         scope = $rootScope.$new();
-        return scope.markers = mainMarkers;
+        return !!(scope.markers = mainMarkers);
       });
 
-    it('watches marker icon bindings', function() {
+    it('watches marker icon bindings', function () {
         var element;
         var icon;
         var markers;
         element = angular.element('<leaflet markers="markers" watchMarkers="true"></leaflet>');
         element = $compile(element)(scope);
         markers = void 0;
-        leafletData.getMarkers().then(function(leafletMarkers) {
-          return markers = leafletMarkers;
+        leafletData.getMarkers().then(function (leafletMarkers) {
+          return !!(markers = leafletMarkers);
         });
 
         scope.$digest();
@@ -853,14 +852,14 @@ describe('Directive: leaflet', function() {
         return expect(markers.m1.options.icon.options.iconUrl).toEqual(DEFAULT_URL);
       });
 
-    return it('does not watch on markers when watch is disabled', function() {
+    return it('does not watch on markers when watch is disabled', function () {
         var element;
         var markers;
         element = angular.element('<leaflet markers="markers" watch-markers="false"></leaflet>');
         element = $compile(element)(scope);
         markers = void 0;
-        leafletData.getMarkers().then(function(leafletMarkers) {
-          return markers = leafletMarkers;
+        leafletData.getMarkers().then(function (leafletMarkers) {
+          return !!(markers = leafletMarkers);
         });
 
         scope.$digest();

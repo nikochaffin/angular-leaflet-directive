@@ -3,25 +3,25 @@
 /*jshint -W117 */
 /*jshint globalstrict: true*/
 /* jasmine specs for directives go here */
-describe('Directive: leaflet: layers.watch.markers', function() {
+describe('Directive: leaflet: layers.watch.markers', function () {
   var $compile;
   var $rootScope;
   var leafletData;
   var scope;
 
   beforeEach(module('leaflet-directive'));
-  beforeEach(inject(function(_$compile_, _$rootScope_, _leafletData_) {
+  beforeEach(inject(function (_$compile_, _$rootScope_, _leafletData_) {
     $compile = _$compile_;
     $rootScope = _$rootScope_;
     leafletData = _leafletData_;
     scope = $rootScope.$new();
   }));
 
-  afterEach(inject(function($rootScope) {
+  afterEach(inject(function ($rootScope) {
     $rootScope.$apply();
   }));
 
-  it('should add and remove layers in watch', function() {
+  it('should add and remove layers in watch', function () {
     // If we not provide layers the system will use the default
     angular.extend(scope, {
       layers: {
@@ -53,7 +53,7 @@ describe('Directive: leaflet: layers.watch.markers', function() {
     var element = angular.element('<leaflet layers="layers"></leaflet>');
     element = $compile(element)(scope);
     var layers;
-    leafletData.getLayers().then(function(leafletLayers) {
+    leafletData.getLayers().then(function (leafletLayers) {
       layers = leafletLayers;
     });
 
@@ -88,7 +88,7 @@ describe('Directive: leaflet: layers.watch.markers', function() {
     expect(Object.keys(layers.baselayers).length).toEqual(0);
   });
 
-  it('should add and remove overlays in watch', function() {
+  it('should add and remove overlays in watch', function () {
     // Create correct overlays
     angular.extend(scope, {
       layers: {
@@ -134,7 +134,7 @@ describe('Directive: leaflet: layers.watch.markers', function() {
     element = $compile(element)(scope);
     scope.$digest();
     var layers;
-    leafletData.getLayers().then(function(leafletLayers) {
+    leafletData.getLayers().then(function (leafletLayers) {
       layers = leafletLayers;
     });
 
@@ -178,7 +178,7 @@ describe('Directive: leaflet: layers.watch.markers', function() {
     expect(typeof layers.overlays.fire).toBe('object');
   });
 
-  it('should add and remove markers in overlays in watch 1', function() {
+  it('should add and remove markers in overlays in watch 1', function () {
     // Check for a marker remove in a layer group
     angular.extend(scope, {
       layers: {
@@ -218,17 +218,17 @@ describe('Directive: leaflet: layers.watch.markers', function() {
     var element = angular.element('<leaflet layers="layers" markers="markers"></leaflet>');
     element = $compile(element)(scope);
     var map;
-    leafletData.getMap().then(function(leafletMap) {
+    leafletData.getMap().then(function (leafletMap) {
       map = leafletMap;
     });
 
     var markers;
-    leafletData.getMarkers().then(function(leafletMarkers) {
+    leafletData.getMarkers().then(function (leafletMarkers) {
       markers = leafletMarkers;
     });
 
     var layers;
-    leafletData.getLayers().then(function(leafletLayers) {
+    leafletData.getLayers().then(function (leafletLayers) {
       layers = leafletLayers;
     });
 
@@ -291,7 +291,7 @@ describe('Directive: leaflet: layers.watch.markers', function() {
     expect(layers.overlays.trucks.hasLayer(markers.m1)).toBe(true);
   });
 
-  it('should add and remove markers in overlays in watch 2', function() {
+  it('should add and remove markers in overlays in watch 2', function () {
     // Check for a marker remove in a layer group
     angular.extend(scope, {
       layers: {
@@ -331,17 +331,17 @@ describe('Directive: leaflet: layers.watch.markers', function() {
     var element = angular.element('<leaflet layers="layers" markers="markers"></leaflet>');
     element = $compile(element)(scope);
     var map;
-    leafletData.getMap().then(function(leafletMap) {
+    leafletData.getMap().then(function (leafletMap) {
       map = leafletMap;
     });
 
     var markers;
-    leafletData.getMarkers().then(function(leafletMarkers) {
+    leafletData.getMarkers().then(function (leafletMarkers) {
       markers = leafletMarkers;
     });
 
     var layers;
-    leafletData.getLayers().then(function(leafletLayers) {
+    leafletData.getLayers().then(function (leafletLayers) {
       layers = leafletLayers;
     });
 
@@ -363,7 +363,7 @@ describe('Directive: leaflet: layers.watch.markers', function() {
   });
 
   // MarkerCluster Layer Plugin
-  it('should create a markercluster overlay as specified', function() {
+  it('should create a markercluster overlay as specified', function () {
     // Provide a markercluster layer
     angular.extend(scope, {
       layers: {
@@ -389,17 +389,17 @@ describe('Directive: leaflet: layers.watch.markers', function() {
     var element = angular.element('<leaflet layers="layers"></leaflet>');
     element = $compile(element)(scope);
     var map;
-    leafletData.getMap().then(function(leafletMap) {
+    leafletData.getMap().then(function (leafletMap) {
       map = leafletMap;
     });
 
     var markers;
-    leafletData.getMarkers().then(function(leafletMarkers) {
+    leafletData.getMarkers().then(function (leafletMarkers) {
       markers = leafletMarkers;
     });
 
     var layers;
-    leafletData.getLayers().then(function(leafletLayers) {
+    leafletData.getLayers().then(function (leafletLayers) {
       layers = leafletLayers;
     });
 
@@ -413,7 +413,7 @@ describe('Directive: leaflet: layers.watch.markers', function() {
   });
 
   // MarkerCluster Layer Plugin
-  it('should create a visible markercluster overlay as specified', function() {
+  it('should create a visible markercluster overlay as specified', function () {
     // Provide a visible markercluster layer
     angular.extend(scope, {
       layers: {
@@ -440,17 +440,17 @@ describe('Directive: leaflet: layers.watch.markers', function() {
     var element = angular.element('<leaflet layers="layers"></leaflet>');
     element = $compile(element)(scope);
     var map;
-    leafletData.getMap().then(function(leafletMap) {
+    leafletData.getMap().then(function (leafletMap) {
       map = leafletMap;
     });
 
     var markers;
-    leafletData.getMarkers().then(function(leafletMarkers) {
+    leafletData.getMarkers().then(function (leafletMarkers) {
       markers = leafletMarkers;
     });
 
     var layers;
-    leafletData.getLayers().then(function(leafletLayers) {
+    leafletData.getLayers().then(function (leafletLayers) {
       layers = leafletLayers;
     });
 
@@ -463,7 +463,7 @@ describe('Directive: leaflet: layers.watch.markers', function() {
     expect(map.hasLayer(layers.overlays.cars)).toBe(true);
   });
 
-  it('should create a visible markercluster layer with options empty', function() {
+  it('should create a visible markercluster layer with options empty', function () {
     angular.extend(scope, {
       layers: {
         baselayers: {
@@ -490,17 +490,17 @@ describe('Directive: leaflet: layers.watch.markers', function() {
     var element = angular.element('<leaflet layers="layers"></leaflet>');
     element = $compile(element)(scope);
     var map;
-    leafletData.getMap().then(function(leafletMap) {
+    leafletData.getMap().then(function (leafletMap) {
       map = leafletMap;
     });
 
     var markers;
-    leafletData.getMarkers().then(function(leafletMarkers) {
+    leafletData.getMarkers().then(function (leafletMarkers) {
       markers = leafletMarkers;
     });
 
     var layers;
-    leafletData.getLayers().then(function(leafletLayers) {
+    leafletData.getLayers().then(function (leafletLayers) {
       layers = leafletLayers;
     });
 
@@ -520,7 +520,7 @@ describe('Directive: leaflet: layers.watch.markers', function() {
     //expect(layers.overlays.cars.options.removeOutsideVisibleBounds).toBe(true);
   });
 
-  it('should create a visible markercluster layer with options', function() {
+  it('should create a visible markercluster layer with options', function () {
     angular.extend(scope, {
       layers: {
         baselayers: {
@@ -550,17 +550,17 @@ describe('Directive: leaflet: layers.watch.markers', function() {
     var element = angular.element('<leaflet layers="layers"></leaflet>');
     element = $compile(element)(scope);
     var map;
-    leafletData.getMap().then(function(leafletMap) {
+    leafletData.getMap().then(function (leafletMap) {
       map = leafletMap;
     });
 
     var markers;
-    leafletData.getMarkers().then(function(leafletMarkers) {
+    leafletData.getMarkers().then(function (leafletMarkers) {
       markers = leafletMarkers;
     });
 
     var layers;
-    leafletData.getLayers().then(function(leafletLayers) {
+    leafletData.getLayers().then(function (leafletLayers) {
       layers = leafletLayers;
     });
 
@@ -582,7 +582,7 @@ describe('Directive: leaflet: layers.watch.markers', function() {
     expect(layers.overlays.cars.options.disableClusteringAtZoom).toEqual(18);
   });
 
-  it('should create a visible markercluster layer with options and layers', function() {
+  it('should create a visible markercluster layer with options and layers', function () {
     angular.extend(scope, {
       layers: {
         baselayers: {
@@ -624,17 +624,17 @@ describe('Directive: leaflet: layers.watch.markers', function() {
     var element = angular.element('<leaflet layers="layers" markers="markers"></leaflet>');
     element = $compile(element)(scope);
     var map;
-    leafletData.getMap().then(function(leafletMap) {
+    leafletData.getMap().then(function (leafletMap) {
       map = leafletMap;
     });
 
     var markers;
-    leafletData.getMarkers().then(function(leafletMarkers) {
+    leafletData.getMarkers().then(function (leafletMarkers) {
       markers = leafletMarkers;
     });
 
     var layers;
-    leafletData.getLayers().then(function(leafletLayers) {
+    leafletData.getLayers().then(function (leafletLayers) {
       layers = leafletLayers;
     });
 

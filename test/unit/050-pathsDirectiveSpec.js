@@ -4,15 +4,15 @@
 /*jshint globalstrict: true*/
 /* jasmine specs for directives go here */
 
-describe('Directive: leaflet', function() {
+describe('Directive: leaflet', function () {
   var $compile;
   var $rootScope;
   var leafletData;
   var scope;
 
-  beforeEach(function() {
+  beforeEach(function () {
       module('leaflet-directive');
-      inject(function(_$compile_, _$rootScope_, _leafletData_) {
+      inject(function (_$compile_, _$rootScope_, _leafletData_) {
         $compile = _$compile_;
         $rootScope = _$rootScope_;
         leafletData = _leafletData_;
@@ -20,12 +20,12 @@ describe('Directive: leaflet', function() {
       });
     });
 
-  afterEach(inject(function($rootScope) {
+  afterEach(inject(function ($rootScope) {
     $rootScope.$apply();
   }));
 
   // Error management
-  it('should not allow a bad name object', function() {
+  it('should not allow a bad name object', function () {
     var latlngs1 = [
         { lat: 0.966, lng: 2.02 },
         { lat: 2.02, lng: 4.04 },
@@ -42,14 +42,14 @@ describe('Directive: leaflet', function() {
     element = $compile(element)(scope);
     scope.$digest();
 
-    leafletData.getPaths().then(function(paths) {
+    leafletData.getPaths().then(function (paths) {
       expect(paths).toEqual({});
     });
 
   });
 
   // Polyline
-  it('should create polyline on the map', function() {
+  it('should create polyline on the map', function () {
     var latlngs1 = [
         { lat: 0.966, lng: 2.02 },
         { lat: 2.02, lng: 4.04 },
@@ -67,7 +67,7 @@ describe('Directive: leaflet', function() {
     var element = angular.element('<leaflet paths="paths"></leaflet>');
     element = $compile(element)(scope);
     scope.$digest();
-    leafletData.getPaths().then(function(paths) {
+    leafletData.getPaths().then(function (paths) {
       var polyline1 = paths.p1;
       var polyline2 = paths.p2;
       latlngs1 = polyline1.getLatLngs();
@@ -84,7 +84,7 @@ describe('Directive: leaflet', function() {
     });
   });
 
-  it('should support polyline with coordinates as arrays', function() {
+  it('should support polyline with coordinates as arrays', function () {
     var latlngs = [
         [0.966, 2.02],
         [2.02, 4.04],
@@ -97,7 +97,7 @@ describe('Directive: leaflet', function() {
     var element = angular.element('<leaflet paths="paths"></leaflet>');
     element = $compile(element)(scope);
     scope.$digest();
-    leafletData.getPaths().then(function(paths) {
+    leafletData.getPaths().then(function (paths) {
       var polyline = paths.p1;
       latlngs = polyline.getLatLngs();
       expect(latlngs[0].lat).toBeCloseTo(0.966);
@@ -108,7 +108,7 @@ describe('Directive: leaflet', function() {
   });
 
   // MultiPolyline
-  it('should create multiPolyline on the map', function() {
+  it('should create multiPolyline on the map', function () {
     angular.extend(scope, {
       paths: {
         p1: {
@@ -129,7 +129,7 @@ describe('Directive: leaflet', function() {
     var element = angular.element('<leaflet paths="paths"></leaflet>');
     element = $compile(element)(scope);
     scope.$digest();
-    leafletData.getPaths().then(function(paths) {
+    leafletData.getPaths().then(function (paths) {
       var polylines = paths.p1;
       var latlngs = polylines.getLatLngs();
       expect(latlngs[0][0].lat).toBeCloseTo(0.966);
@@ -144,19 +144,19 @@ describe('Directive: leaflet', function() {
   });
 
   // Polygon
-  it('should create polygon on the map', function() {
+  it('should create polygon on the map', function () {
     var latlngs = [
         { lat: 0.966, lng: 2.02 },
         { lat: 2.02, lng: 4.04 },
         { lat: 0.466, lng: 1.02 },
         { lat: 1.02, lng: 3.04 },
     ];
-    angular.extend(scope, { paths: { p1: { latlngs: latlngs, type: 'polygon' }}});
+    angular.extend(scope, { paths: { p1: { latlngs: latlngs, type: 'polygon' } } });
     var element = angular.element('<leaflet paths="paths"></leaflet>');
     element = $compile(element)(scope);
 
     scope.$digest();
-    leafletData.getPaths().then(function(paths) {
+    leafletData.getPaths().then(function (paths) {
       var polygon = paths.p1;
       latlngs = polygon.getLatLngs();
       expect(latlngs[0].lat).toBeCloseTo(0.966);
@@ -171,7 +171,7 @@ describe('Directive: leaflet', function() {
   });
 
   // MultiPolygon
-  it('should create multiPolygon on the map', function() {
+  it('should create multiPolygon on the map', function () {
     var latlngs1 = [
         { lat: 0.966, lng: 2.02 },
         { lat: 2.02, lng: 4.04 },
@@ -184,11 +184,11 @@ describe('Directive: leaflet', function() {
         { lat: 1.466, lng: 2.02 },
         { lat: 2.02, lng: 4.04 },
     ];
-    angular.extend(scope, { paths: { p1: { latlngs: [latlngs1, latlngs2], type: 'multiPolygon' }}});
+    angular.extend(scope, { paths: { p1: { latlngs: [latlngs1, latlngs2], type: 'multiPolygon' } } });
     var element = angular.element('<leaflet paths="paths"></leaflet>');
     element = $compile(element)(scope);
     scope.$digest();
-    leafletData.getPaths().then(function(paths) {
+    leafletData.getPaths().then(function (paths) {
       var multiPolygon = paths.p1;
 
       latlngs1 = multiPolygon.getLatLngs();
@@ -212,7 +212,7 @@ describe('Directive: leaflet', function() {
   });
 
   // Rectangle
-  it('should create rectangle on the map', function() {
+  it('should create rectangle on the map', function () {
     var latlngs1 = [
         { lat: 0.966, lng: 2.02 },
         { lat: 2.02, lng: 4.04 },
@@ -221,11 +221,11 @@ describe('Directive: leaflet', function() {
         { lat: 0.466, lng: 1.02 },
         { lat: 1.02, lng: 3.04 },
     ];
-    angular.extend(scope, { paths: { p1: { latlngs: latlngs1, type: 'rectangle' }, p2: { latlngs: latlngs2, type: 'rectangle' }}});
+    angular.extend(scope, { paths: { p1: { latlngs: latlngs1, type: 'rectangle' }, p2: { latlngs: latlngs2, type: 'rectangle' } } });
     var element = angular.element('<leaflet paths="paths"></leaflet>');
     element = $compile(element)(scope);
     scope.$digest();
-    leafletData.getPaths().then(function(paths) {
+    leafletData.getPaths().then(function (paths) {
       var rectangle1 = paths.p1;
       var rectangle2 = paths.p2;
       latlngs1 = rectangle1.getBounds();
@@ -247,7 +247,7 @@ describe('Directive: leaflet', function() {
   });
 
   // Circle
-  it('should create circle on the map', function() {
+  it('should create circle on the map', function () {
     var c1 = {
       latlngs: { lat: 0.966, lng: 2.02 },
       radius: 10,
@@ -258,12 +258,12 @@ describe('Directive: leaflet', function() {
       radius: 20,
       type: 'circle',
     };
-    angular.extend(scope, { paths: { p1: c1, p2: c2 }});
+    angular.extend(scope, { paths: { p1: c1, p2: c2 } });
     var element = angular.element('<leaflet paths="paths"></leaflet>');
     element = $compile(element)(scope);
     scope.$digest();
 
-    leafletData.getPaths().then(function(paths) {
+    leafletData.getPaths().then(function (paths) {
       var circle1 = paths.p1;
       var circle2 = paths.p2;
       var latlngs1 = circle1.getLatLng();
@@ -281,7 +281,7 @@ describe('Directive: leaflet', function() {
   });
 
   // CircleMarker
-  it('should create circleMarker on the map', function() {
+  it('should create circleMarker on the map', function () {
     var c1 = {
       latlngs: { lat: 0.966, lng: 2.02 },
       radius: 10,
@@ -292,11 +292,11 @@ describe('Directive: leaflet', function() {
       radius: 20,
       type: 'circleMarker',
     };
-    angular.extend(scope, { paths: { p1: c1, p2: c2 }});
+    angular.extend(scope, { paths: { p1: c1, p2: c2 } });
     var element = angular.element('<leaflet paths="paths"></leaflet>');
     element = $compile(element)(scope);
     scope.$digest();
-    leafletData.getPaths().then(function(paths) {
+    leafletData.getPaths().then(function (paths) {
       var circle1 = paths.p1;
       var circle2 = paths.p2;
       var latlngs1 = circle1.getLatLng();
@@ -314,47 +314,47 @@ describe('Directive: leaflet', function() {
   });
 
   // Polygon
-  it('should update polygon colors on the map', function() {
+  it('should update polygon colors on the map', function () {
     var latlngs = [
         { lat: 0.966, lng: 2.02 },
         { lat: 2.02, lng: 4.04 },
         { lat: 0.466, lng: 1.02 },
         { lat: 1.02, lng: 3.04 },
     ];
-    angular.extend(scope, { paths: { p1: { latlngs: latlngs, type: 'polygon', color: 'white', fillColor: 'red' }}});
+    angular.extend(scope, { paths: { p1: { latlngs: latlngs, type: 'polygon', color: 'white', fillColor: 'red' } } });
     var element = angular.element('<leaflet paths="paths"></leaflet>');
     element = $compile(element)(scope);
 
     scope.$digest();
-    leafletData.getPaths().then(function(paths) {
+    leafletData.getPaths().then(function (paths) {
       var polygon = paths.p1;
       expect(polygon.options.color).toBe('white');
       expect(polygon.options.fillColor).toBe('red');
     });
 
-    angular.extend(scope, { paths: { p1: { latlngs: latlngs, type: 'polygon', color: 'green', fillColor: 'blue' }}});
+    angular.extend(scope, { paths: { p1: { latlngs: latlngs, type: 'polygon', color: 'green', fillColor: 'blue' } } });
 
     scope.$digest();
-    leafletData.getPaths().then(function(paths) {
+    leafletData.getPaths().then(function (paths) {
       var polygon = paths.p1;
       expect(polygon.options.color).toBe('green');
       expect(polygon.options.fillColor).toBe('blue');
     });
   });
 
-  it('should update the path if the path object is changed', function() {
+  it('should update the path if the path object is changed', function () {
     var latlngs = [
         { lat: 0.966, lng: 2.02 },
         { lat: 2.02, lng: 4.04 },
         { lat: 0.466, lng: 1.02 },
         { lat: 1.02, lng: 3.04 },
     ];
-    angular.extend(scope, { paths: { p1: { latlngs: latlngs, type: 'polygon', color: 'white', fillColor: 'red' }}});
+    angular.extend(scope, { paths: { p1: { latlngs: latlngs, type: 'polygon', color: 'white', fillColor: 'red' } } });
     var element = angular.element('<leaflet paths="paths"></leaflet>');
     element = $compile(element)(scope);
 
     scope.$digest();
-    leafletData.getPaths().then(function(paths) {
+    leafletData.getPaths().then(function (paths) {
       var polygon = paths.p1;
       expect(polygon.options.color).toBe('white');
       expect(polygon.options.fillColor).toBe('red');
@@ -366,7 +366,7 @@ describe('Directive: leaflet', function() {
     };
 
     scope.$digest();
-    leafletData.getPaths().then(function(paths) {
+    leafletData.getPaths().then(function (paths) {
       var latlngs = paths.p1.getLatLngs();
       expect(latlngs[0].lat).toBeCloseTo(0.97);
       expect(latlngs[0].lng).toBeCloseTo(2.00);

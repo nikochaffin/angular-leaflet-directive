@@ -1,14 +1,14 @@
 angular.module('leaflet-directive')
-.service('leafletGeoJsonHelpers', function(leafletHelpers, leafletIterators) {
+.service('leafletGeoJsonHelpers', function (leafletHelpers, leafletIterators) {
   var lHlp = leafletHelpers;
   var lIt = leafletIterators;
-  var Point = function(lat, lng) {
+  var Point = function (lat, lng) {
     this.lat = lat;
     this.lng = lng;
     return this;
   };
 
-  var _getLat = function(value) {
+  var _getLat = function (value) {
     if (Array.isArray(value) && value.length === 2) {
       return value[1];
     } else if (lHlp.isDefined(value.type) && value.type === 'Point') {
@@ -18,7 +18,7 @@ angular.module('leaflet-directive')
     }
   };
 
-  var _getLng = function(value) {
+  var _getLng = function (value) {
     if (Array.isArray(value) && value.length === 2) {
       return value[0];
     } else if (lHlp.isDefined(value.type) && value.type === 'Point') {
@@ -28,7 +28,7 @@ angular.module('leaflet-directive')
     }
   };
 
-  var _validateCoords = function(coords) {
+  var _validateCoords = function (coords) {
     if (lHlp.isUndefined(coords)) {
       return false;
     }
@@ -47,14 +47,14 @@ angular.module('leaflet-directive')
       }
     }
 
-    var ret = lIt.all(['lat', 'lng'], function(pos) {
+    var ret = lIt.all(['lat', 'lng'], function (pos) {
       return lHlp.isDefined(coords[pos]) && lHlp.isNumber(coords[pos]);
     });
 
     return ret;
   };
 
-  var _getCoords = function(value) {
+  var _getCoords = function (value) {
     if (!value || !_validateCoords(value)) {
       return;
     }

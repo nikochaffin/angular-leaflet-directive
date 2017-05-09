@@ -3,25 +3,25 @@
 /*jshint -W117 */
 /*jshint globalstrict: true*/
 /* jasmine specs for directives go here */
-describe('Directive: leaflet: layers.watch', function() {
+describe('Directive: leaflet: layers.watch', function () {
   var $compile;
   var $rootScope;
   var leafletData;
   var scope;
 
   beforeEach(module('leaflet-directive'));
-  beforeEach(inject(function(_$compile_, _$rootScope_, _leafletData_) {
+  beforeEach(inject(function (_$compile_, _$rootScope_, _leafletData_) {
     $compile = _$compile_;
     $rootScope = _$rootScope_;
     leafletData = _leafletData_;
     scope = $rootScope.$new();
   }));
 
-  afterEach(inject(function($rootScope) {
+  afterEach(inject(function ($rootScope) {
     $rootScope.$apply();
   }));
 
-  it('should add and remove layers in watch', function() {
+  it('should add and remove layers in watch', function () {
     // If we not provide layers the system will use the default
     angular.extend(scope, {
       layers: {
@@ -53,7 +53,7 @@ describe('Directive: leaflet: layers.watch', function() {
     var element = angular.element('<leaflet layers="layers"></leaflet>');
     element = $compile(element)(scope);
     var layers;
-    leafletData.getLayers().then(function(leafletLayers) {
+    leafletData.getLayers().then(function (leafletLayers) {
       layers = leafletLayers;
     });
 
@@ -88,7 +88,7 @@ describe('Directive: leaflet: layers.watch', function() {
     expect(Object.keys(layers.baselayers).length).toEqual(0);
   });
 
-  it('should add and remove overlays in watch', function() {
+  it('should add and remove overlays in watch', function () {
     // Create correct overlays
     angular.extend(scope, {
       layers: {
@@ -134,7 +134,7 @@ describe('Directive: leaflet: layers.watch', function() {
     element = $compile(element)(scope);
     scope.$digest();
     var layers;
-    leafletData.getLayers().then(function(leafletLayers) {
+    leafletData.getLayers().then(function (leafletLayers) {
       layers = leafletLayers;
     });
 
@@ -183,14 +183,14 @@ describe('Directive: leaflet: layers.watch', function() {
     scope.layers.overlays.countries = {
       name: 'Countries',
       type: 'geoJSONShape',
-      data: {type: 'FeatureCollection',
+      data: { type: 'FeatureCollection',
                     features: [{
                       type:'Feature',
                       geometry: {
                         type: 'Polygon',
                         coordinates: [[[22.65715, 44.234923], [22.944832, 43.823785], [22.65715, 44.234923]]],
                       },
-                    },],
+                    }, ],
             },
       layerOptions: {
         style: {

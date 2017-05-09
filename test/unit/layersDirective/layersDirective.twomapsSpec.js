@@ -3,25 +3,25 @@
 /*jshint -W117 */
 /*jshint globalstrict: true*/
 /* jasmine specs for directives go here */
-describe('Directive: leaflet', function() {
+describe('Directive: leaflet', function () {
   var $compile;
   var $rootScope;
   var leafletData;
   var scope;
 
   beforeEach(module('leaflet-directive'));
-  beforeEach(inject(function(_$compile_, _$rootScope_, _leafletData_) {
+  beforeEach(inject(function (_$compile_, _$rootScope_, _leafletData_) {
     $compile = _$compile_;
     $rootScope = _$rootScope_;
     leafletData = _leafletData_;
     scope = $rootScope.$new();
   }));
 
-  afterEach(inject(function($rootScope) {
+  afterEach(inject(function ($rootScope) {
     $rootScope.$apply();
   }));
 
-  it('should have two maps with distinct layers', function() {
+  it('should have two maps with distinct layers', function () {
     var scope2 = $rootScope.$new();
     angular.extend(scope, {
       layers1: {
@@ -95,15 +95,15 @@ describe('Directive: leaflet', function() {
     scope.$digest();
     scope2.$digest();
 
-    leafletData.getMap('map1').then(function(map) {
-      leafletData.getLayers('map1').then(function(layers) {
+    leafletData.getMap('map1').then(function (map) {
+      leafletData.getLayers('map1').then(function (layers) {
         expect(map.hasLayer(layers.overlays.shapes2)).toBe(false);
         expect(map.hasLayer(layers.overlays.shapes1)).toBe(true);
       });
     });
 
-    leafletData.getMap('map2').then(function(map) {
-      leafletData.getLayers('map2').then(function(layers) {
+    leafletData.getMap('map2').then(function (map) {
+      leafletData.getLayers('map2').then(function (layers) {
         expect(map.hasLayer(layers.overlays.shapes1)).toBe(false);
         expect(map.hasLayer(layers.overlays.shapes2)).toBe(true);
       });
@@ -111,7 +111,7 @@ describe('Directive: leaflet', function() {
 
   });
 
-  it('should have two maps with distinct markers', function() {
+  it('should have two maps with distinct markers', function () {
     var scope2 = $rootScope.$new();
     angular.extend(scope, {
       layers1: {
@@ -185,13 +185,13 @@ describe('Directive: leaflet', function() {
     scope.$digest();
     scope2.$digest();
 
-    leafletData.getMap('map1').then(function(map) {
+    leafletData.getMap('map1').then(function (map) {
       var markers;
-      leafletData.getMarkers('map1').then(function(leafletMarkers) {
+      leafletData.getMarkers('map1').then(function (leafletMarkers) {
         markers = leafletMarkers;
       });
 
-      leafletData.getLayers('map1').then(function(layers) {
+      leafletData.getLayers('map1').then(function (layers) {
         expect(Object.keys(markers).length).toEqual(1);
         expect(markers.m1 instanceof L.Marker).toBe(true);
         expect(markers.m2 instanceof L.Marker).toBe(false);
@@ -202,13 +202,13 @@ describe('Directive: leaflet', function() {
       });
     });
 
-    leafletData.getMap('map2').then(function(map) {
+    leafletData.getMap('map2').then(function (map) {
       var markers;
-      leafletData.getMarkers('map2').then(function(leafletMarkers) {
+      leafletData.getMarkers('map2').then(function (leafletMarkers) {
         markers = leafletMarkers;
       });
 
-      leafletData.getLayers('map2').then(function(layers) {
+      leafletData.getLayers('map2').then(function (layers) {
         expect(Object.keys(markers).length).toEqual(1);
         expect(markers.m1 instanceof L.Marker).toBe(false);
         expect(markers.m2 instanceof L.Marker).toBe(true);

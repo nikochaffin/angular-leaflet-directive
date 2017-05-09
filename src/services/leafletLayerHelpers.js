@@ -1,5 +1,5 @@
 angular.module('leaflet-directive')
-.factory('leafletLayerHelpers', function($rootScope, $log, $q, leafletHelpers, leafletIterators) {
+.factory('leafletLayerHelpers', function ($rootScope, $log, $q, leafletHelpers, leafletIterators) {
   var Helpers = leafletHelpers;
   var isString = leafletHelpers.isString;
   var isObject = leafletHelpers.isObject;
@@ -8,7 +8,7 @@ angular.module('leaflet-directive')
   var errorHeader = leafletHelpers.errorHeader;
   var $it = leafletIterators;
 
-  var utfGridCreateLayer = function(params) {
+  var utfGridCreateLayer = function (params) {
     if (!Helpers.UTFGridPlugin.isLoaded()) {
       $log.error('[AngularJS - Leaflet] The UTFGrid plugin is not loaded.');
       return;
@@ -16,19 +16,19 @@ angular.module('leaflet-directive')
 
     var utfgrid = new L.UtfGrid(params.url, params.pluginOptions);
 
-    utfgrid.on('mouseover', function(e) {
+    utfgrid.on('mouseover', function (e) {
       $rootScope.$broadcast('leafletDirectiveMap.utfgridMouseover', e);
     });
 
-    utfgrid.on('mouseout', function(e) {
+    utfgrid.on('mouseout', function (e) {
       $rootScope.$broadcast('leafletDirectiveMap.utfgridMouseout', e);
     });
 
-    utfgrid.on('click', function(e) {
+    utfgrid.on('click', function (e) {
       $rootScope.$broadcast('leafletDirectiveMap.utfgridClick', e);
     });
 
-    utfgrid.on('mousemove', function(e) {
+    utfgrid.on('mousemove', function (e) {
       $rootScope.$broadcast('leafletDirectiveMap.utfgridMousemove', e);
     });
 
@@ -38,13 +38,13 @@ angular.module('leaflet-directive')
   var layerTypes = {
     xyz: {
       mustHaveUrl: true,
-      createLayer: function(params) {
+      createLayer: function (params) {
         return L.tileLayer(params.url, params.options);
       },
     },
     mapbox: {
       mustHaveKey: true,
-      createLayer: function(params) {
+      createLayer: function (params) {
         var version = 3;
         if (isDefined(params.options.version) && params.options.version === 4) {
           version = params.options.version;
@@ -58,7 +58,7 @@ angular.module('leaflet-directive')
     },
     geoJSON: {
       mustHaveUrl: true,
-      createLayer: function(params) {
+      createLayer: function (params) {
         if (!Helpers.GeoJSONPlugin.isLoaded()) {
           return;
         }
@@ -68,27 +68,27 @@ angular.module('leaflet-directive')
     },
     geoJSONShape: {
       mustHaveUrl: false,
-      createLayer: function(params) {
+      createLayer: function (params) {
         return new L.GeoJSON(params.data,
             params.options);
       },
     },
     geoJSONAwesomeMarker: {
       mustHaveUrl: false,
-      createLayer: function(params) {
+      createLayer: function (params) {
         return new L.geoJson(params.data, {
-          pointToLayer: function(feature, latlng) {
-            return L.marker(latlng, {icon: L.AwesomeMarkers.icon(params.icon)});
+          pointToLayer: function (feature, latlng) {
+            return L.marker(latlng, { icon: L.AwesomeMarkers.icon(params.icon) });
           },
         });
       },
     },
     geoJSONVectorMarker: {
       mustHaveUrl: false,
-      createLayer: function(params) {
+      createLayer: function (params) {
         return new L.geoJson(params.data, {
-          pointToLayer: function(feature, latlng) {
-            return L.marker(latlng, {icon: L.VectorMarkers.icon(params.icon)});
+          pointToLayer: function (feature, latlng) {
+            return L.marker(latlng, { icon: L.VectorMarkers.icon(params.icon) });
           },
         });
       },
@@ -99,7 +99,7 @@ angular.module('leaflet-directive')
     },
     cartodbTiles: {
       mustHaveKey: true,
-      createLayer: function(params) {
+      createLayer: function (params) {
         var url = '//' + params.user + '.cartodb.com/api/v1/map/' + params.key + '/{z}/{x}/{y}.png';
         return L.tileLayer(url, params.options);
       },
@@ -107,7 +107,7 @@ angular.module('leaflet-directive')
     cartodbUTFGrid: {
       mustHaveKey: true,
       mustHaveLayer: true,
-      createLayer: function(params) {
+      createLayer: function (params) {
         params.url = '//' + params.user + '.cartodb.com/api/v1/map/' + params.key + '/' + params.layer + '/{z}/{x}/{y}.grid.json';
         return utfGridCreateLayer(params);
       },
@@ -115,7 +115,7 @@ angular.module('leaflet-directive')
     cartodbInteractive: {
       mustHaveKey: true,
       mustHaveLayer: true,
-      createLayer: function(params) {
+      createLayer: function (params) {
         var tilesURL = '//' + params.user + '.cartodb.com/api/v1/map/' + params.key + '/{z}/{x}/{y}.png';
         var tileLayer = L.tileLayer(tilesURL, params.options);
         params.url = '//' + params.user + '.cartodb.com/api/v1/map/' + params.key + '/' + params.layer + '/{z}/{x}/{y}.grid.json';
@@ -125,20 +125,20 @@ angular.module('leaflet-directive')
     },
     wms: {
       mustHaveUrl: true,
-      createLayer: function(params) {
+      createLayer: function (params) {
         return L.tileLayer.wms(params.url, params.options);
       },
     },
     wmts: {
       mustHaveUrl: true,
-      createLayer: function(params) {
+      createLayer: function (params) {
         return L.tileLayer.wmts(params.url, params.options);
       },
     },
     wfs: {
       mustHaveUrl: true,
       mustHaveLayer: true,
-      createLayer: function(params) {
+      createLayer: function (params) {
         if (!Helpers.WFSLayerPlugin.isLoaded()) {
           return;
         }
@@ -154,13 +154,13 @@ angular.module('leaflet-directive')
     },
     group: {
       mustHaveUrl: false,
-      createLayer: function(params) {
+      createLayer: function (params) {
         var lyrs = [];
-        $it.each(params.options.layers, function(l) {
+        $it.each(params.options.layers, function (l) {
                   lyrs.push(createLayer(l));
                 });
 
-        params.options.loadedDefer = function() {
+        params.options.loadedDefer = function () {
           var defers = [];
           if (isDefined(params.options.layers)) {
             for (var i = 0; i < params.options.layers.length; i++) {
@@ -179,13 +179,13 @@ angular.module('leaflet-directive')
     },
     featureGroup: {
       mustHaveUrl: false,
-      createLayer: function() {
+      createLayer: function () {
         return L.featureGroup();
       },
     },
     google: {
       mustHaveUrl: false,
-      createLayer: function(params) {
+      createLayer: function (params) {
         var type = params.type || 'SATELLITE';
         if (!Helpers.GoogleLayerPlugin.isLoaded()) {
           return;
@@ -196,7 +196,7 @@ angular.module('leaflet-directive')
     },
     here: {
       mustHaveUrl: false,
-      createLayer: function(params) {
+      createLayer: function (params) {
         var provider = params.provider || 'HERE.terrainDay';
         if (!Helpers.LeafletProviderPlugin.isLoaded()) {
           return;
@@ -207,7 +207,7 @@ angular.module('leaflet-directive')
     },
     china:{
       mustHaveUrl:false,
-      createLayer:function(params) {
+      createLayer:function (params) {
         var type = params.type || '';
         if (!Helpers.ChinaLayerPlugin.isLoaded()) {
           return;
@@ -218,7 +218,7 @@ angular.module('leaflet-directive')
     },
     agsBase: {
       mustHaveLayer: true,
-      createLayer: function(params) {
+      createLayer: function (params) {
         if (!Helpers.AGSBaseLayerPlugin.isLoaded()) {
           return;
         }
@@ -228,7 +228,7 @@ angular.module('leaflet-directive')
     },
     ags: {
       mustHaveUrl: true,
-      createLayer: function(params) {
+      createLayer: function (params) {
         if (!Helpers.AGSLayerPlugin.isLoaded()) {
           return;
         }
@@ -238,11 +238,11 @@ angular.module('leaflet-directive')
           url: params.url,
         });
         var layer = new lvector.AGS(options);
-        layer.onAdd = function(map) {
+        layer.onAdd = function (map) {
           this.setMap(map);
         };
 
-        layer.onRemove = function() {
+        layer.onRemove = function () {
           this.setMap(null);
         };
 
@@ -251,7 +251,7 @@ angular.module('leaflet-directive')
     },
     agsFeature: {
       mustHaveUrl: true,
-      createLayer: function(params) {
+      createLayer: function (params) {
         if (!Helpers.AGSFeatureLayerPlugin.isLoaded()) {
           $log.warn(errorHeader + ' The esri plugin is not loaded.');
           return;
@@ -260,13 +260,13 @@ angular.module('leaflet-directive')
         params.options.url = params.url;
 
         var layer = L.esri.featureLayer(params.options);
-        var load = function() {
+        var load = function () {
           if (isDefined(params.options.loadedDefer)) {
             params.options.loadedDefer.resolve();
           }
         };
 
-        layer.on('loading', function() {
+        layer.on('loading', function () {
           params.options.loadedDefer = $q.defer();
           layer.off('load', load);
           layer.on('load', load);
@@ -277,7 +277,7 @@ angular.module('leaflet-directive')
     },
     agsTiled: {
       mustHaveUrl: true,
-      createLayer: function(params) {
+      createLayer: function (params) {
         if (!Helpers.AGSTiledMapLayerPlugin.isLoaded()) {
           $log.warn(errorHeader + ' The esri plugin is not loaded.');
           return;
@@ -290,7 +290,7 @@ angular.module('leaflet-directive')
     },
     agsDynamic: {
       mustHaveUrl: true,
-      createLayer: function(params) {
+      createLayer: function (params) {
         if (!Helpers.AGSDynamicMapLayerPlugin.isLoaded()) {
           $log.warn(errorHeader + ' The esri plugin is not loaded.');
           return;
@@ -303,7 +303,7 @@ angular.module('leaflet-directive')
     },
     agsImage: {
       mustHaveUrl: true,
-      createLayer: function(params) {
+      createLayer: function (params) {
         if (!Helpers.AGSImageMapLayerPlugin.isLoaded()) {
           $log.warn(errorHeader + ' The esri plugin is not loaded.');
           return;
@@ -316,7 +316,7 @@ angular.module('leaflet-directive')
     },
     agsClustered: {
       mustHaveUrl: true,
-      createLayer: function(params) {
+      createLayer: function (params) {
         if (!Helpers.AGSClusteredLayerPlugin.isLoaded()) {
           $log.warn(errorHeader + ' The esri clustered layer plugin is not loaded.');
           return;
@@ -332,7 +332,7 @@ angular.module('leaflet-directive')
     },
     agsHeatmap: {
       mustHaveUrl: true,
-      createLayer: function(params) {
+      createLayer: function (params) {
         if (!Helpers.AGSHeatmapLayerPlugin.isLoaded()) {
           $log.warn(errorHeader + ' The esri heatmap layer plugin is not loaded.');
           return;
@@ -348,7 +348,7 @@ angular.module('leaflet-directive')
     },
     markercluster: {
       mustHaveUrl: false,
-      createLayer: function(params) {
+      createLayer: function (params) {
         if (!Helpers.MarkerClusterPlugin.isLoaded()) {
           $log.warn(errorHeader + ' The markercluster plugin is not loaded.');
           return;
@@ -359,7 +359,7 @@ angular.module('leaflet-directive')
     },
     bing: {
       mustHaveUrl: false,
-      createLayer: function(params) {
+      createLayer: function (params) {
         if (!Helpers.BingLayerPlugin.isLoaded()) {
           return;
         }
@@ -370,7 +370,7 @@ angular.module('leaflet-directive')
     webGLHeatmap: {
       mustHaveUrl: false,
       mustHaveData: true,
-      createLayer: function(params) {
+      createLayer: function (params) {
         if (!Helpers.WebGLHeatMapLayerPlugin.isLoaded()) {
           return;
         }
@@ -386,7 +386,7 @@ angular.module('leaflet-directive')
     heat: {
       mustHaveUrl: false,
       mustHaveData: true,
-      createLayer: function(params) {
+      createLayer: function (params) {
         if (!Helpers.HeatLayerPlugin.isLoaded()) {
           return;
         }
@@ -406,7 +406,7 @@ angular.module('leaflet-directive')
     },
     yandex: {
       mustHaveUrl: false,
-      createLayer: function(params) {
+      createLayer: function (params) {
         var type = params.type || 'map';
         if (!Helpers.YandexLayerPlugin.isLoaded()) {
           return;
@@ -418,13 +418,13 @@ angular.module('leaflet-directive')
     imageOverlay: {
       mustHaveUrl: true,
       mustHaveBounds: true,
-      createLayer: function(params) {
+      createLayer: function (params) {
         return L.imageOverlay(params.url, params.bounds, params.options);
       },
     },
     iip: {
       mustHaveUrl: true,
-      createLayer: function(params) {
+      createLayer: function (params) {
         return L.tileLayer.iip(params.url, params.options);
       },
     },
@@ -434,7 +434,7 @@ angular.module('leaflet-directive')
     // so we let user to define their own layer outside the directive,
     // and pass it on "createLayer" result for next processes
     custom: {
-      createLayer: function(params) {
+      createLayer: function (params) {
         if (params.layer instanceof L.Class) {
           return angular.copy(params.layer);
         }        else {
@@ -444,7 +444,7 @@ angular.module('leaflet-directive')
     },
     cartodb: {
       mustHaveUrl: true,
-      createLayer: function(params) {
+      createLayer: function (params) {
         return cartodb.createLayer(params.map, params.url);
       },
     },
@@ -548,7 +548,7 @@ angular.module('leaflet-directive')
         $log.debug('Loaded Deferred', defers);
         var count = defers.length;
         if (count > 0) {
-          var resolve = function() {
+          var resolve = function () {
             count--;
             if (count === 0) {
               map.removeLayer(layer);
@@ -562,7 +562,7 @@ angular.module('leaflet-directive')
           map.removeLayer(layer);
         }
       } else {
-        layerOptions.loadedDefer.promise.then(function() {
+        layerOptions.loadedDefer.promise.then(function () {
           map.removeLayer(layer);
         });
       }
@@ -571,9 +571,68 @@ angular.module('leaflet-directive')
     }
   }
 
+  /*
+   * L.TileLayer.Grayscale is a regular tilelayer with grayscale makeover.
+   */
+
+  L.TileLayer.Grayscale = L.TileLayer.extend({
+    options: {
+      quotaRed: 21,
+      quotaGreen: 71,
+      quotaBlue: 8,
+      quotaDividerTune: 0,
+      quotaDivider: function() {
+        return this.quotaRed + this.quotaGreen + this.quotaBlue + this.quotaDividerTune;
+      }
+    },
+
+    initialize: function (url, options) {
+      options.crossOrigin = true;
+      L.TileLayer.prototype.initialize.call(this, url, options);
+
+      this.on('tileload', function(e) {
+        this._makeGrayscale(e.tile);
+      });
+    },
+
+    _createTile: function () {
+      var tile = L.TileLayer.prototype._createTile.call(this);
+      tile.crossOrigin = "Anonymous";
+      return tile;
+    },
+
+    _makeGrayscale: function (img) {
+      if (img.getAttribute('data-grayscaled')) {
+        return;
+      }
+
+      img.crossOrigin = '';
+      var canvas = document.createElement("canvas");
+      canvas.width = img.width;
+      canvas.height = img.height;
+      var ctx = canvas.getContext("2d");
+      ctx.drawImage(img, 0, 0);
+
+      var imgd = ctx.getImageData(0, 0, canvas.width, canvas.height);
+      var pix = imgd.data;
+      for (var i = 0, n = pix.length; i < n; i += 4) {
+        pix[i] = pix[i + 1] = pix[i + 2] = (this.options.quotaRed * pix[i] + this.options.quotaGreen * pix[i + 1] + this.options.quotaBlue * pix[i + 2]) / this.options.quotaDivider();
+      }
+      ctx.putImageData(imgd, 0, 0);
+      img.setAttribute('data-grayscaled', true);
+      img.src = canvas.toDataURL();
+    }
+  });
+
+  var tileLayerGrayscale = function (url, options) {
+    return new L.TileLayer.Grayscale(url, options);
+  };
+
   return {
     createLayer: createLayer,
+    tileLayerGrayscale: tileLayerGrayscale,
     safeAddLayer: safeAddLayer,
     safeRemoveLayer: safeRemoveLayer,
+
   };
 });

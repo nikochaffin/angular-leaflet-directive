@@ -1,5 +1,5 @@
 angular.module('leaflet-directive')
-.factory('leafletPathEvents', function($rootScope, $q, $log, leafletHelpers, leafletLabelEvents, leafletEventsHelpers) {
+.factory('leafletPathEvents', function ($rootScope, $q, $log, leafletHelpers, leafletLabelEvents, leafletEventsHelpers) {
   var isDefined = leafletHelpers.isDefined;
   var isObject = leafletHelpers.isObject;
   var Helpers = leafletHelpers;
@@ -11,20 +11,20 @@ angular.module('leaflet-directive')
   TODO (nmccready) This EventsHelper needs to be derrived from leafletEventsHelpers to elminate copy and paste code.
   */
 
-  var _genDispatchPathEvent = function(maybeMapId, eventName, logic, leafletScope, lObject, name, model, layerName) {
+  var _genDispatchPathEvent = function (maybeMapId, eventName, logic, leafletScope, lObject, name, model, layerName) {
     maybeMapId = maybeMapId || '';
 
     if (maybeMapId)
       maybeMapId = '.' + maybeMapId;
 
-    return function(e) {
+    return function (e) {
       var broadcastName = 'leafletDirectivePath' + maybeMapId + '.' + eventName;
       $log.debug(broadcastName);
       fire(leafletScope, broadcastName, logic, e, e.target || lObject, model, name, layerName);
     };
   };
 
-  var _bindPathEvents = function(maybeMapId, lObject, name, model, leafletScope) {
+  var _bindPathEvents = function (maybeMapId, lObject, name, model, leafletScope) {
     var pathEvents = [];
     var i;
     var eventName;
@@ -129,7 +129,7 @@ angular.module('leaflet-directive')
     }
   };
 
-  var _getAvailablePathEvents = function() {
+  var _getAvailablePathEvents = function () {
     return [
         'click',
         'dblclick',

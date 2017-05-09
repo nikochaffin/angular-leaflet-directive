@@ -4,7 +4,7 @@
 /*jshint globalstrict: true*/
 /* jasmine specs for directives go here */
 
-describe('Directive: leaflet', function() {
+describe('Directive: leaflet', function () {
   var $compile = null;
   var $rootScope = null;
   var $timeout;
@@ -12,7 +12,7 @@ describe('Directive: leaflet', function() {
   var leafletMapDefaults = null;
 
   beforeEach(module('leaflet-directive'));
-  beforeEach(inject(function(_$compile_, _$rootScope_, _$timeout_, _leafletData_, _leafletMapDefaults_) {
+  beforeEach(inject(function (_$compile_, _$rootScope_, _$timeout_, _leafletData_, _leafletMapDefaults_) {
     $compile = _$compile_;
     $rootScope = _$rootScope_;
     $timeout = _$timeout_;
@@ -20,11 +20,11 @@ describe('Directive: leaflet', function() {
     leafletMapDefaults = _leafletMapDefaults_;
   }));
 
-  afterEach(inject(function($rootScope) {
+  afterEach(inject(function ($rootScope) {
     $rootScope.$apply();
   }));
 
-  it('should change the center if maxbounds specified', function() {
+  it('should change the center if maxbounds specified', function () {
     angular.extend($rootScope, {
       maxbounds: {
         southWest: {
@@ -43,7 +43,7 @@ describe('Directive: leaflet', function() {
     var element = angular.element('<leaflet defaults="defaults" maxbounds="maxbounds"></leaflet>');
     element = $compile(element)($rootScope);
     var leafletMap;
-    leafletData.getMap().then(function(map) {
+    leafletData.getMap().then(function (map) {
       leafletMap = map;
     });
 

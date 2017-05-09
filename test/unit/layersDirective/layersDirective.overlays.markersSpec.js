@@ -6,8 +6,8 @@ jshint globalstrict: true
 jasmine specs for directives go here
  */
 
-(function() {
-  describe('Directive: leaflet: layers.overlays.markers', function() {
+(function () {
+  describe('Directive: leaflet: layers.overlays.markers', function () {
     var $compile;
     var $q;
     var $rootScope;
@@ -16,9 +16,9 @@ jasmine specs for directives go here
     var leafletMarkersHelper;
     var scope;
     $timeout = $q = scope = leafletData = $rootScope = $compile = leafletMarkersHelper = void 0;
-    beforeEach(function() {
+    beforeEach(function () {
       module('leaflet-directive');
-      return inject(function(_$compile_, _$rootScope_, _leafletData_, _leafletMarkersHelpers_, _$q_, _$timeout_) {
+      return inject(function (_$compile_, _$rootScope_, _leafletData_, _leafletMarkersHelpers_, _$q_, _$timeout_) {
         $timeout = _$timeout_;
         window.ngLeafLetTestGlobals.$timeout = $timeout;
         $q = _$q_;
@@ -30,14 +30,14 @@ jasmine specs for directives go here
       });
     });
 
-    afterEach(inject(function($rootScope) {
+    afterEach(inject(function ($rootScope) {
       if (!scope.$$phase) {
         return $rootScope.$apply();
       }
     }));
 
-    describe('marker isNested', function() {
-      it('should check for a marker in the layer group that is visible', function(done) {
+    describe('marker isNested', function () {
+      it('should check for a marker in the layer group that is visible', function (done) {
         var element;
         angular.extend(scope, {
           layers: {
@@ -76,8 +76,8 @@ jasmine specs for directives go here
         });
         element = angular.element('<leaflet layers="layers" markers="markers" markers-nested="true"></leaflet>');
         element = $compile(element)(scope);
-        return this.digest($rootScope, function() {
-          return $q.all([leafletData.getMap(), leafletData.getMarkers(), leafletData.getLayers()]).then(function(promiseArray) {
+        return this.digest($rootScope, function () {
+          return $q.all([leafletData.getMap(), leafletData.getMarkers(), leafletData.getLayers()]).then(function (promiseArray) {
             var layers;
             var map;
             var markerToCheck;
@@ -94,7 +94,7 @@ jasmine specs for directives go here
         });
       });
 
-      return it('should check for a marker in a wrong layer group', function() {
+      return it('should check for a marker in a wrong layer group', function () {
         var element;
         angular.extend(scope, {
           layers: {
@@ -129,14 +129,14 @@ jasmine specs for directives go here
         });
         element = angular.element('<leaflet layers="layers" markers="markers" markers-nested="true"></leaflet>');
         element = $compile(element)(scope);
-        return leafletData.getMarkers().then(function(markers) {
+        return leafletData.getMarkers().then(function (markers) {
           return expect(Object.keys(markers).length).toEqual(0);
         });
       });
     });
 
-    return describe('marker', function() {
-      it('should check for a marker in the layer group that is visible', function() {
+    return describe('marker', function () {
+      it('should check for a marker in the layer group that is visible', function () {
         var element;
         var map;
         var markers;
@@ -173,17 +173,17 @@ jasmine specs for directives go here
         element = angular.element('<leaflet layers="layers" markers="markers"></leaflet>');
         element = $compile(element)(scope);
         map = void 0;
-        leafletData.getMap().then(function(leafletMap) {
+        leafletData.getMap().then(function (leafletMap) {
           return map = leafletMap;
         });
 
         markers = void 0;
-        leafletData.getMarkers().then(function(leafletMarkers) {
+        leafletData.getMarkers().then(function (leafletMarkers) {
           return markers = leafletMarkers;
         });
 
         scope.$digest();
-        return leafletData.getLayers().then(function(layers) {
+        return leafletData.getLayers().then(function (layers) {
           expect(Object.keys(markers).length).toEqual(1);
           expect(markers.m1 instanceof L.Marker).toBe(true);
           expect(layers.overlays.cars.hasLayer(markers.m1)).toBe(true);
@@ -191,7 +191,7 @@ jasmine specs for directives go here
         });
       });
 
-      it('should check for a marker in a wrong layer group', function() {
+      it('should check for a marker in a wrong layer group', function () {
         var element;
         angular.extend(scope, {
           layers: {
@@ -225,12 +225,12 @@ jasmine specs for directives go here
         });
         element = angular.element('<leaflet layers="layers" markers="markers"></leaflet>');
         element = $compile(element)(scope);
-        return leafletData.getMarkers().then(function(markers) {
+        return leafletData.getMarkers().then(function (markers) {
           return expect(Object.keys(markers).length).toEqual(0);
         });
       });
 
-      return it('should check for a marker the old way', function() {
+      return it('should check for a marker the old way', function () {
         var element;
         var map;
         angular.extend(scope, {
@@ -265,12 +265,12 @@ jasmine specs for directives go here
         element = angular.element('<leaflet layers="layers" markers="markers"></leaflet>');
         element = $compile(element)(scope);
         map = void 0;
-        leafletData.getMap().then(function(leafletMap) {
+        leafletData.getMap().then(function (leafletMap) {
           return map = leafletMap;
         });
 
         scope.$digest();
-        return leafletData.getMarkers().then(function(markers) {
+        return leafletData.getMarkers().then(function (markers) {
           expect(Object.keys(markers).length).toEqual(1);
           return expect(map.hasLayer(markers.m1)).toBe(true);
         });

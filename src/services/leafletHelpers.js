@@ -1,4 +1,4 @@
-angular.module('leaflet-directive').service('leafletHelpers', function($q, $log) {
+angular.module('leaflet-directive').service('leafletHelpers', function ($q, $log) {
   var _errorHeader = '[AngularJS - Leaflet] ';
   var _copy = angular.copy;
   var _clone = _copy;
@@ -15,7 +15,7 @@ angular.module('leaflet-directive').service('leafletHelpers', function($q, $log)
   _getObjectValue(obj,"bike.1") returns 'hi'
   this is getPath in ui-gmap
    */
-  var _getObjectValue = function(object, pathStr) {
+  var _getObjectValue = function (object, pathStr) {
     var obj;
     if (!object || !angular.isObject(object))
         return;
@@ -26,7 +26,7 @@ angular.module('leaflet-directive').service('leafletHelpers', function($q, $log)
     }
 
     obj = object;
-    pathStr.split('.').forEach(function(value) {
+    pathStr.split('.').forEach(function (value) {
       if (obj) {
         obj = obj[value];
       }
@@ -41,8 +41,8 @@ angular.module('leaflet-directive').service('leafletHelpers', function($q, $log)
    returns:
    'bike["one"]["two"]'
    */
-  var _getObjectArrayPath = function(pathStr) {
-    return pathStr.split('.').reduce(function(previous, current) {
+  var _getObjectArrayPath = function (pathStr) {
+    return pathStr.split('.').reduce(function (previous, current) {
       return previous + '["' + current + '"]';
     });
   };
@@ -52,8 +52,8 @@ angular.module('leaflet-directive').service('leafletHelpers', function($q, $log)
    returns:
    "bike.one.two"
    */
-  var _getObjectDotPath = function(arrayOfStrings) {
-    return arrayOfStrings.reduce(function(previous, current) {
+  var _getObjectDotPath = function (arrayOfStrings) {
+    return arrayOfStrings.reduce(function (previous, current) {
       return previous + '.' + current;
     });
   };
@@ -97,11 +97,11 @@ angular.module('leaflet-directive').service('leafletHelpers', function($q, $log)
     return defer;
   }
 
-  var _isDefined = function(value) {
+  var _isDefined = function (value) {
     return angular.isDefined(value) && value !== null;
   };
 
-  var _isUndefined = function(value) {
+  var _isUndefined = function (value) {
     return !_isDefined(value);
   };
 
@@ -119,8 +119,8 @@ angular.module('leaflet-directive').service('leafletHelpers', function($q, $log)
   @param name Name to normalize
    */
 
-  var camelCase = function(name) {
-      return name.replace(SPECIAL_CHARS_REGEXP, function(_, separator, letter, offset) {
+  var camelCase = function (name) {
+      return name.replace(SPECIAL_CHARS_REGEXP, function (_, separator, letter, offset) {
         if (offset) {
           return letter.toUpperCase();
         } else {
@@ -134,7 +134,7 @@ angular.module('leaflet-directive').service('leafletHelpers', function($q, $log)
   @param name Name to normalize
    */
 
-  var directiveNormalize = function(name) {
+  var directiveNormalize = function (name) {
       return camelCase(name.replace(PREFIX_REGEXP, ''));
     };
 
@@ -149,22 +149,22 @@ angular.module('leaflet-directive').service('leafletHelpers', function($q, $log)
     getObjectValue: _getObjectValue,
     getObjectArrayPath:_getObjectArrayPath,
     getObjectDotPath: _getObjectDotPath,
-    defaultTo: function(val, _default) {
+    defaultTo: function (val, _default) {
       return _isDefined(val) ? val : _default;
     },
 
     //mainly for checking attributes of directives lets keep this minimal (on what we accept)
-    isTruthy: function(val) {
+    isTruthy: function (val) {
       return val === 'true' || val === true;
     },
 
     //Determine if a reference is {}
-    isEmpty: function(value) {
+    isEmpty: function (value) {
       return Object.keys(value).length === 0;
     },
 
     //Determine if a reference is undefined or {}
-    isUndefinedOrEmpty: function(value) {
+    isUndefinedOrEmpty: function (value) {
       return (angular.isUndefined(value) || value === null) || Object.keys(value).length === 0;
     },
 
@@ -178,12 +178,12 @@ angular.module('leaflet-directive').service('leafletHelpers', function($q, $log)
     isFunction: angular.isFunction,
     equals: angular.equals,
 
-    isValidCenter: function(center) {
+    isValidCenter: function (center) {
       return angular.isDefined(center) && angular.isNumber(center.lat) &&
              angular.isNumber(center.lng) && angular.isNumber(center.zoom);
     },
 
-    isValidPoint: function(point) {
+    isValidPoint: function (point) {
       if (!angular.isDefined(point)) {
         return false;
       }
@@ -195,7 +195,7 @@ angular.module('leaflet-directive').service('leafletHelpers', function($q, $log)
       return angular.isNumber(point.lat) && angular.isNumber(point.lng);
     },
 
-    isSameCenterOnMap: function(centerModel, map) {
+    isSameCenterOnMap: function (centerModel, map) {
       var mapCenter = map.getCenter();
       var zoom = map.getZoom();
       if (centerModel.lat && centerModel.lng &&
@@ -208,7 +208,7 @@ angular.module('leaflet-directive').service('leafletHelpers', function($q, $log)
       return false;
     },
 
-    safeApply: function($scope, fn) {
+    safeApply: function ($scope, fn) {
       var phase = $scope.$root.$$phase;
       if (phase === '$apply' || phase === '$digest') {
         $scope.$eval(fn);
@@ -219,7 +219,7 @@ angular.module('leaflet-directive').service('leafletHelpers', function($q, $log)
 
     obtainEffectiveMapId: _obtainEffectiveMapId,
 
-    getDefer: function(d, mapId) {
+    getDefer: function (d, mapId) {
       var id = _obtainEffectiveMapId(d, mapId);
       var defer;
       if (!angular.isDefined(d[id]) || d[id].resolvedDefer === false) {
@@ -233,35 +233,35 @@ angular.module('leaflet-directive').service('leafletHelpers', function($q, $log)
 
     getUnresolvedDefer: _getUnresolvedDefer,
 
-    setResolvedDefer: function(d, mapId) {
+    setResolvedDefer: function (d, mapId) {
       var id = _obtainEffectiveMapId(d, mapId);
       d[id].resolvedDefer = true;
     },
 
-    rangeIsSupported: function() {
+    rangeIsSupported: function () {
       var testrange = document.createElement('input');
       testrange.setAttribute('type', 'range');
       return testrange.type === 'range';
     },
 
     FullScreenControlPlugin: {
-      isLoaded: function() {
+      isLoaded: function () {
         return angular.isDefined(L.Control.Fullscreen);
       },
     },
 
     MiniMapControlPlugin: {
-      isLoaded: function() {
+      isLoaded: function () {
         return angular.isDefined(L.Control.MiniMap);
       },
     },
 
     AwesomeMarkersPlugin: {
-      isLoaded: function() {
+      isLoaded: function () {
         return angular.isDefined(L.AwesomeMarkers) && angular.isDefined(L.AwesomeMarkers.Icon);
       },
 
-      is: function(icon) {
+      is: function (icon) {
         if (this.isLoaded()) {
           return icon instanceof L.AwesomeMarkers.Icon;
         } else {
@@ -269,7 +269,7 @@ angular.module('leaflet-directive').service('leafletHelpers', function($q, $log)
         }
       },
 
-      equal: function(iconA, iconB) {
+      equal: function (iconA, iconB) {
         if (!this.isLoaded()) {
           return false;
         }
@@ -283,11 +283,11 @@ angular.module('leaflet-directive').service('leafletHelpers', function($q, $log)
     },
 
     VectorMarkersPlugin: {
-      isLoaded: function() {
+      isLoaded: function () {
         return angular.isDefined(L.VectorMarkers) && angular.isDefined(L.VectorMarkers.Icon);
       },
 
-      is: function(icon) {
+      is: function (icon) {
         if (this.isLoaded()) {
           return icon instanceof L.VectorMarkers.Icon;
         } else {
@@ -295,7 +295,7 @@ angular.module('leaflet-directive').service('leafletHelpers', function($q, $log)
         }
       },
 
-      equal: function(iconA, iconB) {
+      equal: function (iconA, iconB) {
         if (!this.isLoaded()) {
           return false;
         }
@@ -309,7 +309,7 @@ angular.module('leaflet-directive').service('leafletHelpers', function($q, $log)
     },
 
     DomMarkersPlugin: {
-      isLoaded: function() {
+      isLoaded: function () {
         if (angular.isDefined(L.DomMarkers) && angular.isDefined(L.DomMarkers.Icon)) {
           return true;
         } else {
@@ -317,7 +317,7 @@ angular.module('leaflet-directive').service('leafletHelpers', function($q, $log)
         }
       },
 
-      is: function(icon) {
+      is: function (icon) {
         if (this.isLoaded()) {
           return icon instanceof L.DomMarkers.Icon;
         } else {
@@ -325,7 +325,7 @@ angular.module('leaflet-directive').service('leafletHelpers', function($q, $log)
         }
       },
 
-      equal: function(iconA, iconB) {
+      equal: function (iconA, iconB) {
         if (!this.isLoaded()) {
           return false;
         }
@@ -339,7 +339,7 @@ angular.module('leaflet-directive').service('leafletHelpers', function($q, $log)
     },
 
     PolylineDecoratorPlugin: {
-      isLoaded: function() {
+      isLoaded: function () {
         if (angular.isDefined(L.PolylineDecorator)) {
           return true;
         } else {
@@ -347,7 +347,7 @@ angular.module('leaflet-directive').service('leafletHelpers', function($q, $log)
         }
       },
 
-      is: function(decoration) {
+      is: function (decoration) {
         if (this.isLoaded()) {
           return decoration instanceof L.PolylineDecorator;
         } else {
@@ -355,7 +355,7 @@ angular.module('leaflet-directive').service('leafletHelpers', function($q, $log)
         }
       },
 
-      equal: function(decorationA, decorationB) {
+      equal: function (decorationA, decorationB) {
         if (!this.isLoaded()) {
           return false;
         }
@@ -369,7 +369,7 @@ angular.module('leaflet-directive').service('leafletHelpers', function($q, $log)
     },
 
     MakiMarkersPlugin: {
-      isLoaded: function() {
+      isLoaded: function () {
         if (angular.isDefined(L.MakiMarkers) && angular.isDefined(L.MakiMarkers.Icon)) {
           return true;
         } else {
@@ -377,7 +377,7 @@ angular.module('leaflet-directive').service('leafletHelpers', function($q, $log)
         }
       },
 
-      is: function(icon) {
+      is: function (icon) {
         if (this.isLoaded()) {
           return icon instanceof L.MakiMarkers.Icon;
         } else {
@@ -385,7 +385,7 @@ angular.module('leaflet-directive').service('leafletHelpers', function($q, $log)
         }
       },
 
-      equal: function(iconA, iconB) {
+      equal: function (iconA, iconB) {
         if (!this.isLoaded()) {
           return false;
         }
@@ -398,7 +398,7 @@ angular.module('leaflet-directive').service('leafletHelpers', function($q, $log)
       },
     },
     ExtraMarkersPlugin: {
-      isLoaded: function() {
+      isLoaded: function () {
         if (angular.isDefined(L.ExtraMarkers) && angular.isDefined(L.ExtraMarkers.Icon)) {
           return true;
         } else {
@@ -406,7 +406,7 @@ angular.module('leaflet-directive').service('leafletHelpers', function($q, $log)
         }
       },
 
-      is: function(icon) {
+      is: function (icon) {
         if (this.isLoaded()) {
           return icon instanceof L.ExtraMarkers.Icon;
         } else {
@@ -414,7 +414,7 @@ angular.module('leaflet-directive').service('leafletHelpers', function($q, $log)
         }
       },
 
-      equal: function(iconA, iconB) {
+      equal: function (iconA, iconB) {
         if (!this.isLoaded()) {
           return false;
         }
@@ -427,11 +427,11 @@ angular.module('leaflet-directive').service('leafletHelpers', function($q, $log)
       },
     },
     LabelPlugin: {
-      isLoaded: function() {
+      isLoaded: function () {
         return angular.isDefined(L.Label);
       },
 
-      is: function(layer) {
+      is: function (layer) {
         if (this.isLoaded()) {
           return layer instanceof L.MarkerClusterGroup;
         } else {
@@ -440,11 +440,11 @@ angular.module('leaflet-directive').service('leafletHelpers', function($q, $log)
       },
     },
     MarkerClusterPlugin: {
-      isLoaded: function() {
+      isLoaded: function () {
         return angular.isDefined(L.MarkerClusterGroup);
       },
 
-      is: function(layer) {
+      is: function (layer) {
         if (this.isLoaded()) {
           return layer instanceof L.MarkerClusterGroup;
         } else {
@@ -453,11 +453,11 @@ angular.module('leaflet-directive').service('leafletHelpers', function($q, $log)
       },
     },
     GoogleLayerPlugin: {
-      isLoaded: function() {
+      isLoaded: function () {
         return angular.isDefined(L.Google);
       },
 
-      is: function(layer) {
+      is: function (layer) {
         if (this.isLoaded()) {
           return layer instanceof L.Google;
         } else {
@@ -466,11 +466,11 @@ angular.module('leaflet-directive').service('leafletHelpers', function($q, $log)
       },
     },
     LeafletProviderPlugin: {
-      isLoaded: function() {
+      isLoaded: function () {
         return angular.isDefined(L.TileLayer.Provider);
       },
 
-      is: function(layer) {
+      is: function (layer) {
         if (this.isLoaded()) {
           return layer instanceof L.TileLayer.Provider;
         } else {
@@ -479,26 +479,26 @@ angular.module('leaflet-directive').service('leafletHelpers', function($q, $log)
       },
     },
     ChinaLayerPlugin: {
-      isLoaded: function() {
+      isLoaded: function () {
         return angular.isDefined(L.tileLayer.chinaProvider);
       },
     },
     HeatLayerPlugin: {
-      isLoaded: function() {
+      isLoaded: function () {
         return angular.isDefined(L.heatLayer);
       },
     },
     WebGLHeatMapLayerPlugin: {
-      isLoaded: function() {
+      isLoaded: function () {
         return angular.isDefined(L.TileLayer.WebGLHeatMap);
       },
     },
     BingLayerPlugin: {
-      isLoaded: function() {
+      isLoaded: function () {
         return angular.isDefined(L.BingLayer);
       },
 
-      is: function(layer) {
+      is: function (layer) {
         if (this.isLoaded()) {
           return layer instanceof L.BingLayer;
         } else {
@@ -507,11 +507,11 @@ angular.module('leaflet-directive').service('leafletHelpers', function($q, $log)
       },
     },
     WFSLayerPlugin: {
-      isLoaded: function() {
+      isLoaded: function () {
         return L.GeoJSON.WFS !== undefined;
       },
 
-      is: function(layer) {
+      is: function (layer) {
         if (this.isLoaded()) {
           return layer instanceof L.GeoJSON.WFS;
         } else {
@@ -520,11 +520,11 @@ angular.module('leaflet-directive').service('leafletHelpers', function($q, $log)
       },
     },
     AGSBaseLayerPlugin: {
-      isLoaded: function() {
+      isLoaded: function () {
         return L.esri !== undefined && L.esri.basemapLayer !== undefined;
       },
 
-      is: function(layer) {
+      is: function (layer) {
         if (this.isLoaded()) {
           return layer instanceof L.esri.basemapLayer;
         } else {
@@ -533,11 +533,11 @@ angular.module('leaflet-directive').service('leafletHelpers', function($q, $log)
       },
     },
     AGSLayerPlugin: {
-      isLoaded: function() {
+      isLoaded: function () {
         return lvector !== undefined && lvector.AGS !== undefined;
       },
 
-      is: function(layer) {
+      is: function (layer) {
         if (this.isLoaded()) {
           return layer instanceof lvector.AGS;
         } else {
@@ -546,11 +546,11 @@ angular.module('leaflet-directive').service('leafletHelpers', function($q, $log)
       },
     },
     AGSFeatureLayerPlugin: {
-      isLoaded: function() {
+      isLoaded: function () {
         return L.esri !== undefined && L.esri.featureLayer !== undefined;
       },
 
-      is: function(layer) {
+      is: function (layer) {
         if (this.isLoaded()) {
           return layer instanceof L.esri.featureLayer;
         } else {
@@ -559,11 +559,11 @@ angular.module('leaflet-directive').service('leafletHelpers', function($q, $log)
       },
     },
     AGSTiledMapLayerPlugin: {
-      isLoaded: function() {
+      isLoaded: function () {
         return L.esri !== undefined && L.esri.tiledMapLayer !== undefined;
       },
 
-      is: function(layer) {
+      is: function (layer) {
         if (this.isLoaded()) {
           return layer instanceof L.esri.tiledMapLayer;
         } else {
@@ -572,11 +572,11 @@ angular.module('leaflet-directive').service('leafletHelpers', function($q, $log)
       },
     },
     AGSDynamicMapLayerPlugin: {
-      isLoaded: function() {
+      isLoaded: function () {
         return L.esri !== undefined && L.esri.dynamicMapLayer !== undefined;
       },
 
-      is: function(layer) {
+      is: function (layer) {
         if (this.isLoaded()) {
           return layer instanceof L.esri.dynamicMapLayer;
         } else {
@@ -585,11 +585,11 @@ angular.module('leaflet-directive').service('leafletHelpers', function($q, $log)
       },
     },
     AGSImageMapLayerPlugin: {
-      isLoaded: function() {
+      isLoaded: function () {
         return L.esri !== undefined && L.esri.imageMapLayer !== undefined;
       },
 
-      is: function(layer) {
+      is: function (layer) {
         if (this.isLoaded()) {
           return layer instanceof L.esri.imageMapLayer;
         } else {
@@ -598,11 +598,11 @@ angular.module('leaflet-directive').service('leafletHelpers', function($q, $log)
       },
     },
     AGSClusteredLayerPlugin: {
-      isLoaded: function() {
+      isLoaded: function () {
         return L.esri !== undefined && L.esri.clusteredFeatureLayer !== undefined;
       },
 
-      is: function(layer) {
+      is: function (layer) {
         if (this.isLoaded()) {
           return layer instanceof L.esri.clusteredFeatureLayer;
         } else {
@@ -611,11 +611,11 @@ angular.module('leaflet-directive').service('leafletHelpers', function($q, $log)
       },
     },
     AGSHeatmapLayerPlugin: {
-      isLoaded: function() {
+      isLoaded: function () {
         return L.esri !== undefined && L.esri.heatmapFeatureLayer !== undefined;
       },
 
-      is: function(layer) {
+      is: function (layer) {
         if (this.isLoaded()) {
           return layer instanceof L.esri.heatmapFeatureLayer;
         } else {
@@ -624,11 +624,11 @@ angular.module('leaflet-directive').service('leafletHelpers', function($q, $log)
       },
     },
     YandexLayerPlugin: {
-      isLoaded: function() {
+      isLoaded: function () {
         return angular.isDefined(L.Yandex);
       },
 
-      is: function(layer) {
+      is: function (layer) {
         if (this.isLoaded()) {
           return layer instanceof L.Yandex;
         } else {
@@ -637,11 +637,11 @@ angular.module('leaflet-directive').service('leafletHelpers', function($q, $log)
       },
     },
     GeoJSONPlugin: {
-      isLoaded: function() {
+      isLoaded: function () {
         return angular.isDefined(L.TileLayer.GeoJSON);
       },
 
-      is: function(layer) {
+      is: function (layer) {
         if (this.isLoaded()) {
           return layer instanceof L.TileLayer.GeoJSON;
         } else {
@@ -650,11 +650,11 @@ angular.module('leaflet-directive').service('leafletHelpers', function($q, $log)
       },
     },
     UTFGridPlugin: {
-      isLoaded: function() {
+      isLoaded: function () {
         return angular.isDefined(L.UtfGrid);
       },
 
-      is: function(layer) {
+      is: function (layer) {
         if (this.isLoaded()) {
           return layer instanceof L.UtfGrid;
         } else {
@@ -664,11 +664,11 @@ angular.module('leaflet-directive').service('leafletHelpers', function($q, $log)
       },
     },
     CartoDB: {
-      isLoaded: function() {
+      isLoaded: function () {
         return cartodb;
       },
 
-      is: function(/*layer*/) {
+      is: function (/*layer*/) {
         return true;
         /*
         if (this.isLoaded()) {
@@ -680,11 +680,11 @@ angular.module('leaflet-directive').service('leafletHelpers', function($q, $log)
     },
     Leaflet: {
       DivIcon: {
-        is: function(icon) {
+        is: function (icon) {
           return icon instanceof L.DivIcon;
         },
 
-        equal: function(iconA, iconB) {
+        equal: function (iconA, iconB) {
           if (this.is(iconA)) {
             return angular.equals(iconA, iconB);
           } else {
@@ -693,11 +693,11 @@ angular.module('leaflet-directive').service('leafletHelpers', function($q, $log)
         },
       },
       Icon: {
-        is: function(icon) {
+        is: function (icon) {
           return icon instanceof L.Icon;
         },
 
-        equal: function(iconA, iconB) {
+        equal: function (iconA, iconB) {
           if (this.is(iconA)) {
             return angular.equals(iconA, iconB);
           } else {

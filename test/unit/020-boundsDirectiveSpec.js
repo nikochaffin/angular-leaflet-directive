@@ -4,7 +4,7 @@
 /*jshint globalstrict: true*/
 /* jasmine specs for directives go here */
 
-describe('Directive: bounds', function() {
+describe('Directive: bounds', function () {
   var $compile;
   var $rootScope;
   var leafletData;
@@ -12,13 +12,13 @@ describe('Directive: bounds', function() {
   var scope;
 
   beforeEach(module('leaflet-directive'));
-  beforeEach(inject(function(_$compile_, _$rootScope_, _leafletData_) {
+  beforeEach(inject(function (_$compile_, _$rootScope_, _leafletData_) {
     $compile = _$compile_;
     $rootScope = _$rootScope_;
     leafletData = _leafletData_;
   }));
 
-  beforeEach(function() {
+  beforeEach(function () {
     scope = $rootScope.$new();
     bounds = {
       southWest: {
@@ -32,11 +32,11 @@ describe('Directive: bounds', function() {
     };
   });
 
-  afterEach(inject(function($rootScope) {
+  afterEach(inject(function ($rootScope) {
     $rootScope.$apply();
   }));
 
-  it('updates the map bounds if bounds are provided', function() {
+  it('updates the map bounds if bounds are provided', function () {
     angular.extend(scope, {
       bounds: bounds,
       center: {},
@@ -45,7 +45,7 @@ describe('Directive: bounds', function() {
     element = $compile(element)(scope);
 
     var map;
-    leafletData.getMap().then(function(leafletMap) {
+    leafletData.getMap().then(function (leafletMap) {
       map = leafletMap;
     });
 
@@ -57,7 +57,7 @@ describe('Directive: bounds', function() {
     expect(mapBounds.getNorthEast().lng).toBeCloseTo(-0.087890625);
   });
 
-  it('allows empty bounds initialization', function() {
+  it('allows empty bounds initialization', function () {
     angular.extend(scope, {
       bounds: {},
       center: {},
@@ -66,7 +66,7 @@ describe('Directive: bounds', function() {
     element = $compile(element)(scope);
 
     var map;
-    leafletData.getMap().then(function(leafletMap) {
+    leafletData.getMap().then(function (leafletMap) {
       map = leafletMap;
     });
 
@@ -77,7 +77,7 @@ describe('Directive: bounds', function() {
     expect(mapBounds.getNorthEast().lng).toBeCloseTo(0);
   });
 
-  it('should update map bounds when map initializes', function() {
+  it('should update map bounds when map initializes', function () {
     angular.extend(scope, {
       bounds: {},
       center: { lat: 5, lng: -3, zoom: 4 },
@@ -86,7 +86,7 @@ describe('Directive: bounds', function() {
     element = $compile(element)(scope);
 
     var map;
-    leafletData.getMap().then(function(leafletMap) {
+    leafletData.getMap().then(function (leafletMap) {
       map = leafletMap;
     });
 
@@ -104,7 +104,7 @@ describe('Directive: bounds', function() {
     expect(bounds.southWest.lng).toBe(mapBounds._southWest.lng);
   });
 
-  it('should initialize map with bounds only', function() {
+  it('should initialize map with bounds only', function () {
     angular.extend(scope, {
       bounds: bounds,
       center: {},
@@ -113,7 +113,7 @@ describe('Directive: bounds', function() {
     element = $compile(element)(scope);
 
     var map;
-    leafletData.getMap().then(function(leafletMap) {
+    leafletData.getMap().then(function (leafletMap) {
       map = leafletMap;
     });
 
@@ -131,7 +131,7 @@ describe('Directive: bounds', function() {
     expect(scopeBounds.southWest.lng).toBe(mapBounds._southWest.lng);
   });
 
-  it('updates the map bounds with options if bounds are provided', function() {
+  it('updates the map bounds with options if bounds are provided', function () {
     bounds.options = {
       padding: [50, 50],
     };
@@ -143,7 +143,7 @@ describe('Directive: bounds', function() {
     element = $compile(element)(scope);
 
     var map;
-    leafletData.getMap().then(function(leafletMap) {
+    leafletData.getMap().then(function (leafletMap) {
       map = leafletMap;
     });
 

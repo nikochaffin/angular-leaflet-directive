@@ -1,24 +1,24 @@
 angular.module('leaflet-directive')
-.factory('leafletGeoJsonEvents', function($rootScope, $q, $log, leafletHelpers,
+.factory('leafletGeoJsonEvents', function ($rootScope, $q, $log, leafletHelpers,
   LeafletEventsHelpersFactory, leafletData) {
   var safeApply = leafletHelpers.safeApply;
   var EventsHelper = LeafletEventsHelpersFactory;
 
-  var GeoJsonEvents = function() {
+  var GeoJsonEvents = function () {
       EventsHelper.call(this, 'leafletDirectiveGeoJson', 'geojson');
     };
 
   GeoJsonEvents.prototype =  new EventsHelper();
 
-  GeoJsonEvents.prototype.genDispatchEvent = function(maybeMapId, eventName, logic, leafletScope, lObject, name, model, layerName, extra) {
+  GeoJsonEvents.prototype.genDispatchEvent = function (maybeMapId, eventName, logic, leafletScope, lObject, name, model, layerName, extra) {
     var base = EventsHelper.prototype.genDispatchEvent.call(this, maybeMapId, eventName, logic, leafletScope, lObject, name, model, layerName);
     var _this = this;
 
-    return function(e) {
+    return function (e) {
       if (eventName === 'mouseout') {
         if (extra.resetStyleOnMouseout) {
           leafletData.getGeoJSON(extra.mapId)
-                    .then(function(leafletGeoJSON) {
+                    .then(function (leafletGeoJSON) {
                       //this is broken on nested needs to traverse or user layerName (nested)
                       var lobj = layerName ? leafletGeoJSON[layerName] : leafletGeoJSON;
                       lobj.resetStyle(e.target);
@@ -26,7 +26,7 @@ angular.module('leaflet-directive')
 
         }
 
-        safeApply(leafletScope, function() {
+        safeApply(leafletScope, function () {
           $rootScope.$broadcast(_this.rootBroadcastName + '.mouseout', e);
         });
       }
@@ -35,7 +35,7 @@ angular.module('leaflet-directive')
     };
   };
 
-  GeoJsonEvents.prototype.getAvailableEvents = function() { return [
+  GeoJsonEvents.prototype.getAvailableEvents = function () { return [
       'click',
       'dblclick',
       'mouseover',

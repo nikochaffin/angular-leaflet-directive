@@ -1,5 +1,5 @@
 angular.module('leaflet-directive')
-.directive('geojson', function($log, $rootScope, leafletData, leafletHelpers,
+.directive('geojson', function ($log, $rootScope, leafletData, leafletHelpers,
     leafletWatchHelpers, leafletDirectiveControlsHelpers, leafletIterators, leafletGeoJsonEvents) {
   var _maybeWatch = leafletWatchHelpers.maybeWatch;
   var _watchOptions = leafletHelpers.watchOptions;
@@ -13,29 +13,29 @@ angular.module('leaflet-directive')
     replace: false,
     require: 'leaflet',
 
-    link: function(scope, element, attrs, controller) {
+    link: function (scope, element, attrs, controller) {
       var isDefined = leafletHelpers.isDefined;
       var leafletScope  = controller.getLeafletScope();
       var leafletGeoJSON = {};
       var _hasSetLeafletData = false;
 
-      controller.getMap().then(function(map) {
+      controller.getMap().then(function (map) {
         var watchOptions = leafletScope.geojsonWatchOptions || _watchOptions;
 
-        var _hookUpEvents = function(geojson, maybeName) {
+        var _hookUpEvents = function (geojson, maybeName) {
           var onEachFeature;
 
           if (angular.isFunction(geojson.onEachFeature)) {
             onEachFeature = geojson.onEachFeature;
           } else {
-            onEachFeature = function(feature, layer) {
+            onEachFeature = function (feature, layer) {
               if (leafletHelpers.LabelPlugin.isLoaded() && isDefined(feature.properties.description)) {
                 layer.bindLabel(feature.properties.description);
               }
 
               leafletGeoJsonEvents.bindEvents(attrs.id, layer, null, feature,
                   leafletScope, maybeName,
-                  {resetStyleOnMouseout: geojson.resetStyleOnMouseout,
+                  { resetStyleOnMouseout: geojson.resetStyleOnMouseout,
                   mapId: attrs.id, });
             };
           }
@@ -46,17 +46,17 @@ angular.module('leaflet-directive')
         var isNested = (hlp.isDefined(attrs.geojsonNested) &&
             hlp.isTruthy(attrs.geojsonNested));
 
-        var _clean = function() {
+        var _clean = function () {
           if (!leafletGeoJSON)
               return;
-          var _remove = function(lObject) {
+          var _remove = function (lObject) {
             if (isDefined(lObject) && map.hasLayer(lObject)) {
               map.removeLayer(lObject);
             }
           };
 
           if (isNested) {
-            $it.each(leafletGeoJSON, function(lObject) {
+            $it.each(leafletGeoJSON, function (lObject) {
               _remove(lObject);
             });
 
@@ -66,7 +66,7 @@ angular.module('leaflet-directive')
           _remove(leafletGeoJSON);
         };
 
-        var _addGeojson = function(geojson, maybeName) {
+        var _addGeojson = function (geojson, maybeName) {
           if (!(isDefined(geojson) && isDefined(geojson.data))) {
             return;
           }
@@ -101,12 +101,12 @@ angular.module('leaflet-directive')
           }
         };
 
-        var _create = function(model) {
+        var _create = function (model) {
           _clean();
           if (isNested) {
             if (!model || !Object.keys(model).length)
                 return;
-            $it.each(model, function(m, name) {
+            $it.each(model, function (m, name) {
               //name could be layerName and or groupName
               //for now it is not tied to a layer
               _addGeojson(m, name);
@@ -120,7 +120,7 @@ angular.module('leaflet-directive')
 
         _extendDirectiveControls(attrs.id, 'geojson', _create, _clean);
 
-        _maybeWatch(leafletScope, 'geojson', watchOptions, function(geojson) {
+        _maybeWatch(leafletScope, 'geojson', watchOptions, function (geojson) {
           _create(geojson);
         });
       });

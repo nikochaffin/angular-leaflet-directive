@@ -1,4 +1,4 @@
-angular.module('leaflet-directive').directive('controls', function($log, leafletHelpers, leafletControlHelpers) {
+angular.module('leaflet-directive').directive('controls', function ($log, leafletHelpers, leafletControlHelpers) {
 
   return {
     restrict: 'A',
@@ -6,7 +6,7 @@ angular.module('leaflet-directive').directive('controls', function($log, leaflet
     replace: false,
     require: '?^leaflet',
 
-    link: function(scope, element, attrs, controller) {
+    link: function (scope, element, attrs, controller) {
       if (!controller) {
         return;
       }
@@ -19,9 +19,9 @@ angular.module('leaflet-directive').directive('controls', function($log, leaflet
       var leafletControls = {};
       var errorHeader = leafletHelpers.errorHeader + ' [Controls] ';
 
-      controller.getMap().then(function(map) {
+      controller.getMap().then(function (map) {
 
-        leafletScope.$watchCollection('controls', function(newControls) {
+        leafletScope.$watchCollection('controls', function (newControls) {
 
           // Delete controls from the array
           for (var name in leafletControls) {

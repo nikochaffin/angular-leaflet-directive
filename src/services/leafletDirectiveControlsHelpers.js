@@ -1,5 +1,5 @@
 angular.module('leaflet-directive')
-.service('leafletDirectiveControlsHelpers', function($log, leafletData, leafletHelpers) {
+.service('leafletDirectiveControlsHelpers', function ($log, leafletData, leafletHelpers) {
   var _isDefined = leafletHelpers.isDefined;
   var _isString = leafletHelpers.isString;
   var _isObject = leafletHelpers.isObject;
@@ -7,7 +7,7 @@ angular.module('leaflet-directive')
 
   var _errorHeader = _mainErrorHeader + '[leafletDirectiveControlsHelpers';
 
-  var _extend = function(id, thingToAddName, createFn, cleanFn) {
+  var _extend = function (id, thingToAddName, createFn, cleanFn) {
     var _fnHeader = _errorHeader + '.extend] ';
     var extender = {};
     if (!_isDefined(thingToAddName)) {
@@ -28,7 +28,7 @@ angular.module('leaflet-directive')
     }
 
     //add external control to create / destroy markers without a watch
-    leafletData.getDirectiveControls().then(function(controls) {
+    leafletData.getDirectiveControls().then(function (controls) {
       angular.extend(controls, extender);
       leafletData.setDirectiveControls(controls, id);
     });

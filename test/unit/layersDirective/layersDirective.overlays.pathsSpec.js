@@ -3,25 +3,25 @@
 /*jshint -W117 */
 /*jshint globalstrict: true*/
 /* jasmine specs for directives go here */
-describe('Directive: leaflet: layers.overlays', function() {
+describe('Directive: leaflet: layers.overlays', function () {
   var $compile;
   var $rootScope;
   var leafletData;
   var scope;
 
   beforeEach(module('leaflet-directive'));
-  beforeEach(inject(function(_$compile_, _$rootScope_, _leafletData_) {
+  beforeEach(inject(function (_$compile_, _$rootScope_, _leafletData_) {
     $compile = _$compile_;
     $rootScope = _$rootScope_;
     leafletData = _leafletData_;
     scope = $rootScope.$new();
   }));
 
-  afterEach(inject(function($rootScope) {
+  afterEach(inject(function ($rootScope) {
     $rootScope.$apply();
   }));
 
-  it('should check for a path in the layer group that is not visible', function() {
+  it('should check for a path in the layer group that is not visible', function () {
     angular.extend(scope, {
       layers: {
         baselayers: {
@@ -64,25 +64,25 @@ describe('Directive: leaflet: layers.overlays', function() {
     var element = angular.element('<leaflet layers="layers" paths="paths"></leaflet>');
     element = $compile(element)(scope);
     var map;
-    leafletData.getMap().then(function(leafletMap) {
+    leafletData.getMap().then(function (leafletMap) {
       map = leafletMap;
     });
 
     var paths;
-    leafletData.getPaths().then(function(leafletPaths) {
+    leafletData.getPaths().then(function (leafletPaths) {
       paths = leafletPaths;
     });
 
     scope.$digest();
 
-    leafletData.getLayers().then(function(layers) {
+    leafletData.getLayers().then(function (layers) {
       expect(Object.keys(paths).length).toEqual(1);
       expect(layers.overlays.lines.hasLayer(paths.p1)).toBe(true);
       expect(map.hasLayer(paths.p1)).toBe(false);
     });
   });
 
-  it('should check for a path in the layer group that is visible', function() {
+  it('should check for a path in the layer group that is visible', function () {
     angular.extend(scope, {
       layers: {
         baselayers: {
@@ -125,25 +125,25 @@ describe('Directive: leaflet: layers.overlays', function() {
     var element = angular.element('<leaflet layers="layers" paths="paths"></leaflet>');
     element = $compile(element)(scope);
     var map;
-    leafletData.getMap().then(function(leafletMap) {
+    leafletData.getMap().then(function (leafletMap) {
       map = leafletMap;
     });
 
     var paths;
-    leafletData.getPaths().then(function(leafletPaths) {
+    leafletData.getPaths().then(function (leafletPaths) {
       paths = leafletPaths;
     });
 
     scope.$digest();
 
-    leafletData.getLayers().then(function(layers) {
+    leafletData.getLayers().then(function (layers) {
       expect(Object.keys(paths).length).toEqual(1);
       expect(layers.overlays.lines.hasLayer(paths.p1)).toBe(true);
       expect(map.hasLayer(paths.p1)).toBe(true);
     });
   });
 
-  it('should check for a path in a wrong layer group', function() {
+  it('should check for a path in a wrong layer group', function () {
     angular.extend(scope, {
       layers: {
         baselayers: {
@@ -185,7 +185,7 @@ describe('Directive: leaflet: layers.overlays', function() {
     });
     var element = angular.element('<leaflet layers="layers" paths="paths"></leaflet>');
     element = $compile(element)(scope);
-    leafletData.getPaths().then(function(paths) {
+    leafletData.getPaths().then(function (paths) {
       expect(Object.keys(paths).length).toEqual(0);
     });
   });

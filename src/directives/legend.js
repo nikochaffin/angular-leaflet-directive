@@ -1,4 +1,4 @@
-angular.module('leaflet-directive').directive('legend', function($log, $http, leafletHelpers, leafletLegendHelpers) {
+angular.module('leaflet-directive').directive('legend', function ($log, $http, leafletHelpers, leafletLegendHelpers) {
 
   return {
     restrict: 'A',
@@ -6,7 +6,7 @@ angular.module('leaflet-directive').directive('legend', function($log, $http, le
     replace: false,
     require: 'leaflet',
 
-    link: function(scope, element, attrs, controller) {
+    link: function (scope, element, attrs, controller) {
 
       var isArray = leafletHelpers.isArray;
       var isDefined = leafletHelpers.isDefined;
@@ -19,7 +19,7 @@ angular.module('leaflet-directive').directive('legend', function($log, $http, le
       var leafletLegend;
       var type;
 
-      leafletScope.$watch('legend', function(newLegend) {
+      leafletScope.$watch('legend', function (newLegend) {
 
         if (isDefined(newLegend)) {
 
@@ -33,9 +33,9 @@ angular.module('leaflet-directive').directive('legend', function($log, $http, le
 
       }, true);
 
-      controller.getMap().then(function(map) {
+      controller.getMap().then(function (map) {
 
-        leafletScope.$watch('legend', function(newLegend) {
+        leafletScope.$watch('legend', function (newLegend) {
 
           if (!isDefined(newLegend)) {
 
@@ -77,14 +77,14 @@ angular.module('leaflet-directive').directive('legend', function($log, $http, le
 
         });
 
-        leafletScope.$watch('legend.url', function(newURL) {
+        leafletScope.$watch('legend.url', function (newURL) {
 
           if (!isDefined(newURL)) {
             return;
           }
 
           $http.get(newURL)
-                            .success(function(legendData) {
+                            .success(function (legendData) {
 
                               if (isDefined(leafletLegend)) {
 
@@ -103,7 +103,7 @@ angular.module('leaflet-directive').directive('legend', function($log, $http, le
                                 legend.loadedData();
                               }
                             })
-                            .error(function() {
+                            .error(function () {
                               $log.warn('[AngularJS - Leaflet] legend.url not loaded.');
                             });
         });

@@ -1,15 +1,15 @@
 'use strict';
 
-describe('Loading 0106-basic-maxbounds-example.html', function() {
+describe('Loading 0106-basic-maxbounds-example.html', function () {
 
-  beforeEach(function() {
+  beforeEach(function () {
     browser.get('0106-basic-maxbounds-example.html');
-    browser.wait(function() {
+    browser.wait(function () {
       return element(by.css('img.leaflet-tile-loaded')).isPresent();
     }, 5000);
   });
 
-  it('should update the maxbounds values if clicked the buttons', function() {
+  it('should update the maxbounds values if clicked the buttons', function () {
     element(by.xpath('.//button[text()="London region"]')).click();
     expect(element(by.css('p.result')).getText()).toBe('Maxbounds: NE(lat: 51.51280224425956, lng: -0.11681556701660155) SW(lat: 51.50211782162702, lng: -0.14428138732910156)');
 

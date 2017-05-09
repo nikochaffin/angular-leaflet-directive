@@ -1,4 +1,4 @@
-angular.module('leaflet-directive').directive('eventBroadcast', function($log, $rootScope, leafletHelpers, leafletMapEvents, leafletIterators) {
+angular.module('leaflet-directive').directive('eventBroadcast', function ($log, $rootScope, leafletHelpers, leafletMapEvents, leafletIterators) {
 
   return {
     restrict: 'A',
@@ -6,7 +6,7 @@ angular.module('leaflet-directive').directive('eventBroadcast', function($log, $
     replace: false,
     require: 'leaflet',
 
-    link: function(scope, element, attrs, controller) {
+    link: function (scope, element, attrs, controller) {
       var isObject = leafletHelpers.isObject;
       var isDefined = leafletHelpers.isDefined;
       var leafletScope  = controller.getLeafletScope();
@@ -14,7 +14,7 @@ angular.module('leaflet-directive').directive('eventBroadcast', function($log, $
       var availableMapEvents = leafletMapEvents.getAvailableMapEvents();
       var addEvents = leafletMapEvents.addEvents;
 
-      controller.getMap().then(function(map) {
+      controller.getMap().then(function (map) {
 
         var mapEvents = [];
         var logic = 'broadcast';
@@ -40,7 +40,7 @@ angular.module('leaflet-directive').directive('eventBroadcast', function($log, $
             $log.warn('[AngularJS - Leaflet] event-broadcast.map.enable must be an object check your model.');
           } else {
             // Enable events
-            leafletIterators.each(eventBroadcast.map.enable, function(eventName) {
+            leafletIterators.each(eventBroadcast.map.enable, function (eventName) {
               // Do we have already the event enabled?
               if (mapEvents.indexOf(eventName) === -1 && availableMapEvents.indexOf(eventName) !== -1) {
                 mapEvents.push(eventName);

@@ -1,4 +1,4 @@
-angular.module('leaflet-directive').factory('leafletMapDefaults', function($q, leafletHelpers) {
+angular.module('leaflet-directive').factory('leafletMapDefaults', function ($q, leafletHelpers) {
   function _getDefaults() {
     return {
       keyboard: true,
@@ -47,16 +47,16 @@ angular.module('leaflet-directive').factory('leafletMapDefaults', function($q, l
 
   // Get the _defaults dictionary, and override the properties defined by the user
   return {
-    reset: function() {
+    reset: function () {
       defaults = {};
     },
 
-    getDefaults: function(scopeId) {
+    getDefaults: function (scopeId) {
       var mapId = obtainEffectiveMapId(defaults, scopeId);
       return defaults[mapId];
     },
 
-    getMapCreationDefaults: function(scopeId) {
+    getMapCreationDefaults: function (scopeId) {
       var mapId = obtainEffectiveMapId(defaults, scopeId);
       var d = defaults[mapId];
 
@@ -99,7 +99,7 @@ angular.module('leaflet-directive').factory('leafletMapDefaults', function($q, l
       return mapDefaults;
     },
 
-    setDefaults: function(userDefaults, scopeId) {
+    setDefaults: function (userDefaults, scopeId) {
       var newDefaults = _getDefaults();
 
       if (isDefined(userDefaults)) {

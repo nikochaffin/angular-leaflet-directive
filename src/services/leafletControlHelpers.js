@@ -1,11 +1,11 @@
-angular.module('leaflet-directive').factory('leafletControlHelpers', function($rootScope, $log, leafletHelpers, leafletLayerHelpers, leafletMapDefaults) {
+angular.module('leaflet-directive').factory('leafletControlHelpers', function ($rootScope, $log, leafletHelpers, leafletLayerHelpers, leafletMapDefaults) {
   var isDefined = leafletHelpers.isDefined;
   var isObject = leafletHelpers.isObject;
   var createLayer = leafletLayerHelpers.createLayer;
   var _controls = {};
   var errorHeader = leafletHelpers.errorHeader + ' [Controls] ';
 
-  var _controlLayersMustBeVisible = function(baselayers, overlays, mapId) {
+  var _controlLayersMustBeVisible = function (baselayers, overlays, mapId) {
     var defaults = leafletMapDefaults.getDefaults(mapId);
     if (!defaults.controls.layers.visible) {
       return false;
@@ -14,7 +14,7 @@ angular.module('leaflet-directive').factory('leafletControlHelpers', function($r
     var atLeastOneControlItemMustBeShown = false;
 
     if (isObject(baselayers)) {
-      Object.keys(baselayers).forEach(function(key) {
+      Object.keys(baselayers).forEach(function (key) {
         var layer = baselayers[key];
         if (!isDefined(layer.layerOptions) || layer.layerOptions.showOnSelector !== false) {
           atLeastOneControlItemMustBeShown = true;
@@ -23,7 +23,7 @@ angular.module('leaflet-directive').factory('leafletControlHelpers', function($r
     }
 
     if (isObject(overlays)) {
-      Object.keys(overlays).forEach(function(key) {
+      Object.keys(overlays).forEach(function (key) {
         var layer = overlays[key];
         if (!isDefined(layer.layerParams) || layer.layerParams.showOnSelector !== false) {
           atLeastOneControlItemMustBeShown = true;
@@ -34,7 +34,7 @@ angular.module('leaflet-directive').factory('leafletControlHelpers', function($r
     return atLeastOneControlItemMustBeShown;
   };
 
-  var _createLayersControl = function(mapId) {
+  var _createLayersControl = function (mapId) {
     var defaults = leafletMapDefaults.getDefaults(mapId);
     var controlOptions = {
       collapsed: defaults.controls.layers.collapsed,
@@ -56,7 +56,7 @@ angular.module('leaflet-directive').factory('leafletControlHelpers', function($r
 
   var controlTypes = {
     draw: {
-      isPluginLoaded: function() {
+      isPluginLoaded: function () {
         if (!angular.isDefined(L.Control.Draw)) {
           $log.error(errorHeader + ' Draw plugin is not loaded.');
           return false;
@@ -65,29 +65,29 @@ angular.module('leaflet-directive').factory('leafletControlHelpers', function($r
         return true;
       },
 
-      checkValidParams: function(/* params */) {
+      checkValidParams: function (/* params */) {
         return true;
       },
 
-      createControl: function(params) {
+      createControl: function (params) {
         return new L.Control.Draw(params);
       },
     },
     scale: {
-      isPluginLoaded: function() {
+      isPluginLoaded: function () {
         return true;
       },
 
-      checkValidParams: function(/* params */) {
+      checkValidParams: function (/* params */) {
         return true;
       },
 
-      createControl: function(params) {
+      createControl: function (params) {
         return new L.control.scale(params);
       },
     },
     fullscreen: {
-      isPluginLoaded: function() {
+      isPluginLoaded: function () {
         if (!angular.isDefined(L.Control.Fullscreen)) {
           $log.error(errorHeader + ' Fullscreen plugin is not loaded.');
           return false;
@@ -96,16 +96,16 @@ angular.module('leaflet-directive').factory('leafletControlHelpers', function($r
         return true;
       },
 
-      checkValidParams: function(/* params */) {
+      checkValidParams: function (/* params */) {
         return true;
       },
 
-      createControl: function(params) {
+      createControl: function (params) {
         return new L.Control.Fullscreen(params);
       },
     },
     search: {
-      isPluginLoaded: function() {
+      isPluginLoaded: function () {
         if (!angular.isDefined(L.Control.Search)) {
           $log.error(errorHeader + ' Search plugin is not loaded.');
           return false;
@@ -114,17 +114,17 @@ angular.module('leaflet-directive').factory('leafletControlHelpers', function($r
         return true;
       },
 
-      checkValidParams: function(/* params */) {
+      checkValidParams: function (/* params */) {
         return true;
       },
 
-      createControl: function(params) {
+      createControl: function (params) {
         return new L.Control.Search(params);
       },
     },
     custom: {},
     minimap: {
-      isPluginLoaded: function() {
+      isPluginLoaded: function () {
         if (!angular.isDefined(L.Control.MiniMap)) {
           $log.error(errorHeader + ' Minimap plugin is not loaded.');
           return false;
@@ -133,7 +133,7 @@ angular.module('leaflet-directive').factory('leafletControlHelpers', function($r
         return true;
       },
 
-      checkValidParams: function(params) {
+      checkValidParams: function (params) {
         if (!isDefined(params.layer)) {
           $log.warn(errorHeader + ' minimap "layer" option should be defined.');
           return false;
@@ -142,7 +142,7 @@ angular.module('leaflet-directive').factory('leafletControlHelpers', function($r
         return true;
       },
 
-      createControl: function(params) {
+      createControl: function (params) {
         var layer = createLayer(params.layer);
 
         if (!isDefined(layer)) {
@@ -158,11 +158,11 @@ angular.module('leaflet-directive').factory('leafletControlHelpers', function($r
   return {
     layersControlMustBeVisible: _controlLayersMustBeVisible,
 
-    isValidControlType: function(type) {
+    isValidControlType: function (type) {
       return Object.keys(controlTypes).indexOf(type) !== -1;
     },
 
-    createControl: function(type, params) {
+    createControl: function (type, params) {
       if (!controlTypes[type].checkValidParams(params)) {
         return;
       }
@@ -170,7 +170,7 @@ angular.module('leaflet-directive').factory('leafletControlHelpers', function($r
       return controlTypes[type].createControl(params);
     },
 
-    updateLayersControl: function(map, mapId, loaded, baselayers, overlays, leafletLayers) {
+    updateLayersControl: function (map, mapId, loaded, baselayers, overlays, leafletLayers) {
       var i;
       var _layersControl = _controls[mapId];
       var mustBeLoaded = _controlLayersMustBeVisible(baselayers, overlays, mapId);

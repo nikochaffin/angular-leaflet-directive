@@ -1,10 +1,10 @@
 var centerDirectiveTypes = ['center', 'lfCenter'];
 var centerDirectives = {};
 
-centerDirectiveTypes.forEach(function(directiveName) {
+centerDirectiveTypes.forEach(function (directiveName) {
   centerDirectives[directiveName] = ['$log', '$q', '$location', '$timeout', 'leafletMapDefaults', 'leafletHelpers',
       'leafletBoundsHelpers', 'leafletMapEvents',
-        function($log, $q, $location, $timeout, leafletMapDefaults, leafletHelpers,
+        function ($log, $q, $location, $timeout, leafletMapDefaults, leafletHelpers,
       leafletBoundsHelpers, leafletMapEvents) {
 
       var isDefined = leafletHelpers.isDefined;
@@ -16,7 +16,7 @@ centerDirectiveTypes.forEach(function(directiveName) {
       var isUndefinedOrEmpty = leafletHelpers.isUndefinedOrEmpty;
       var errorHeader = leafletHelpers.errorHeader;
 
-      var shouldInitializeMapWithBounds = function(bounds, center) {
+      var shouldInitializeMapWithBounds = function (bounds, center) {
         return isDefined(bounds) && isValidBounds(bounds) && isUndefinedOrEmpty(center);
       };
 
@@ -26,18 +26,18 @@ centerDirectiveTypes.forEach(function(directiveName) {
         scope: false,
         replace: false,
         require: 'leaflet',
-        controller: function() {
+        controller: function () {
           _leafletCenter = $q.defer();
-          this.getCenter = function() {
+          this.getCenter = function () {
             return _leafletCenter.promise;
           };
         },
 
-        link: function(scope, element, attrs, controller) {
+        link: function (scope, element, attrs, controller) {
           var leafletScope = controller.getLeafletScope();
           var centerModel = leafletScope[directiveName];
 
-          controller.getMap().then(function(map) {
+          controller.getMap().then(function (map) {
             var defaults = leafletMapDefaults.getDefaults(attrs.id);
 
             if (attrs[directiveName].search('-') !== -1) {
@@ -47,7 +47,7 @@ centerDirectiveTypes.forEach(function(directiveName) {
             } else if (shouldInitializeMapWithBounds(leafletScope.bounds, centerModel)) {
               map.fitBounds(leafletBoundsHelpers.createLeafletBounds(leafletScope.bounds), leafletScope.bounds.options);
               centerModel = map.getCenter();
-              safeApply(leafletScope, function(scope) {
+              safeApply(leafletScope, function (scope) {
                 angular.extend(scope[directiveName], {
                   lat: map.getCenter().lat,
                   lng: map.getCenter().lng,
@@ -56,7 +56,7 @@ centerDirectiveTypes.forEach(function(directiveName) {
                 });
               });
 
-              safeApply(leafletScope, function(scope) {
+              safeApply(leafletScope, function (scope) {
                 var mapBounds = map.getBounds();
                 scope.bounds = {
                   northEast: {
@@ -80,7 +80,7 @@ centerDirectiveTypes.forEach(function(directiveName) {
             var urlCenterHash;
             var mapReady;
             if (attrs.urlHashCenter === 'yes') {
-              var extractCenterFromUrl = function() {
+              var extractCenterFromUrl = function () {
                 var search = $location.search();
                 var centerParam;
                 if (isDefined(search.c)) {
@@ -99,7 +99,7 @@ centerDirectiveTypes.forEach(function(directiveName) {
 
               urlCenterHash = extractCenterFromUrl();
 
-              leafletScope.$on('$locationChangeSuccess', function(event) {
+              leafletScope.$on('$locationChangeSuccess', function (event) {
                 var scope = event.currentScope;
 
                 //$log.debug("updated location...");
@@ -115,7 +115,7 @@ centerDirectiveTypes.forEach(function(directiveName) {
               });
             }
 
-            leafletScope.$watch(directiveName, function(center) {
+            leafletScope.$watch(directiveName, function (center) {
               if (leafletScope.settingCenterFromLeaflet)
                   return;
 
@@ -166,18 +166,18 @@ centerDirectiveTypes.forEach(function(directiveName) {
               leafletScope.settingCenterFromScope = true;
               map.setView([center.lat, center.lng], center.zoom);
               leafletMapEvents.notifyCenterChangedToBounds(leafletScope, map);
-              $timeout(function() {
+              $timeout(function () {
                 leafletScope.settingCenterFromScope = false;
 
                 //$log.debug("allow center scope updates");
               });
             }, true);
 
-            map.whenReady(function() {
+            map.whenReady(function () {
               mapReady = true;
             });
 
-            map.on('moveend', function(/* event */) {
+            map.on('moveend', function (/* event */) {
               // Resolve the center after the first map position
               _leafletCenter.resolve();
               leafletMapEvents.notifyCenterUrlHashChanged(leafletScope, map, attrs, $location.search());
@@ -189,7 +189,7 @@ centerDirectiveTypes.forEach(function(directiveName) {
               }
 
               leafletScope.settingCenterFromLeaflet = true;
-              safeApply(leafletScope, function(scope) {
+              safeApply(leafletScope, function (scope) {
                 if (!leafletScope.settingCenterFromScope) {
                   //$log.debug("updating center model...", map.getCenter(), map.getZoom());
                   angular.extend(scope[directiveName], {
@@ -201,14 +201,14 @@ centerDirectiveTypes.forEach(function(directiveName) {
                 }
 
                 leafletMapEvents.notifyCenterChangedToBounds(leafletScope, map);
-                $timeout(function() {
+                $timeout(function () {
                   leafletScope.settingCenterFromLeaflet = false;
                 });
               });
             });
 
             if (centerModel.autoDiscover === true) {
-              map.on('locationerror', function() {
+              map.on('locationerror', function () {
                 $log.warn(errorHeader + ' The Geolocation API is unauthorized on this page.');
                 if (isValidCenter(centerModel)) {
                   map.setView([centerModel.lat, centerModel.lng], centerModel.zoom);
@@ -226,6 +226,6 @@ centerDirectiveTypes.forEach(function(directiveName) {
     ];
 });
 
-centerDirectiveTypes.forEach(function(dirType) {
+centerDirectiveTypes.forEach(function (dirType) {
   angular.module('leaflet-directive').directive(dirType, centerDirectives[dirType]);
 });

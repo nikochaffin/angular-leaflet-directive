@@ -1,4 +1,4 @@
-angular.module('leaflet-directive').factory('leafletPathsHelpers', function($rootScope, $log, leafletHelpers) {
+angular.module('leaflet-directive').factory('leafletPathsHelpers', function ($rootScope, $log, leafletHelpers) {
   var isDefined = leafletHelpers.isDefined;
   var isArray = leafletHelpers.isArray;
   var isNumber = leafletHelpers.isNumber;
@@ -16,9 +16,9 @@ angular.module('leaflet-directive').factory('leafletPathsHelpers', function($roo
       'smoothFactor', 'noClip',
   ];
   function _convertToLeafletLatLngs(latlngs) {
-    return latlngs.filter(function(latlng) {
+    return latlngs.filter(function (latlng) {
       return isValidPoint(latlng);
-    }).map(function(latlng) {
+    }).map(function (latlng) {
       return _convertToLeafletLatLng(latlng);
     });
   }
@@ -32,7 +32,7 @@ angular.module('leaflet-directive').factory('leafletPathsHelpers', function($roo
   }
 
   function _convertToLeafletMultiLatLngs(paths) {
-    return paths.map(function(latlngs) {
+    return paths.map(function (latlngs) {
       return _convertToLeafletLatLngs(latlngs);
     });
   }
@@ -52,7 +52,7 @@ angular.module('leaflet-directive').factory('leafletPathsHelpers', function($roo
     return options;
   }
 
-  var _updatePathOptions = function(path, data) {
+  var _updatePathOptions = function (path, data) {
     var updatedStyle = {};
     for (var i = 0; i < availableOptions.length; i++) {
       var optionName = availableOptions[i];
@@ -64,7 +64,7 @@ angular.module('leaflet-directive').factory('leafletPathsHelpers', function($roo
     path.setStyle(data);
   };
 
-  var _isValidPolyline = function(latlngs) {
+  var _isValidPolyline = function (latlngs) {
     if (!isArray(latlngs)) {
       return false;
     }
@@ -81,23 +81,23 @@ angular.module('leaflet-directive').factory('leafletPathsHelpers', function($roo
 
   var pathTypes = {
     polyline: {
-      isValid: function(pathData) {
+      isValid: function (pathData) {
         var latlngs = pathData.latlngs;
         return _isValidPolyline(latlngs);
       },
 
-      createPath: function(options) {
+      createPath: function (options) {
         return new L.Polyline([], options);
       },
 
-      setPath: function(path, data) {
+      setPath: function (path, data) {
         path.setLatLngs(_convertToLeafletLatLngs(data.latlngs));
         _updatePathOptions(path, data);
         return;
       },
     },
     multiPolyline: {
-      isValid: function(pathData) {
+      isValid: function (pathData) {
         var latlngs = pathData.latlngs;
         if (!isArray(latlngs)) {
           return false;
@@ -113,34 +113,34 @@ angular.module('leaflet-directive').factory('leafletPathsHelpers', function($roo
         return true;
       },
 
-      createPath: function(options) {
+      createPath: function (options) {
         return new L.multiPolyline([[[0, 0], [1, 1]]], options);
       },
 
-      setPath: function(path, data) {
+      setPath: function (path, data) {
         path.setLatLngs(_convertToLeafletMultiLatLngs(data.latlngs));
         _updatePathOptions(path, data);
         return;
       },
     },
     polygon: {
-      isValid: function(pathData) {
+      isValid: function (pathData) {
         var latlngs = pathData.latlngs;
         return _isValidPolyline(latlngs);
       },
 
-      createPath: function(options) {
+      createPath: function (options) {
         return new L.Polygon([], options);
       },
 
-      setPath: function(path, data) {
+      setPath: function (path, data) {
         path.setLatLngs(_convertToLeafletLatLngs(data.latlngs));
         _updatePathOptions(path, data);
         return;
       },
     },
     multiPolygon: {
-      isValid: function(pathData) {
+      isValid: function (pathData) {
         var latlngs = pathData.latlngs;
 
         if (!isArray(latlngs)) {
@@ -157,18 +157,18 @@ angular.module('leaflet-directive').factory('leafletPathsHelpers', function($roo
         return true;
       },
 
-      createPath: function(options) {
+      createPath: function (options) {
         return new L.MultiPolygon([[[0, 0], [1, 1], [0, 1]]], options);
       },
 
-      setPath: function(path, data) {
+      setPath: function (path, data) {
         path.setLatLngs(_convertToLeafletMultiLatLngs(data.latlngs));
         _updatePathOptions(path, data);
         return;
       },
     },
     rectangle: {
-      isValid: function(pathData) {
+      isValid: function (pathData) {
         var latlngs = pathData.latlngs;
 
         if (!isArray(latlngs) || latlngs.length !== 2) {
@@ -185,26 +185,26 @@ angular.module('leaflet-directive').factory('leafletPathsHelpers', function($roo
         return true;
       },
 
-      createPath: function(options) {
+      createPath: function (options) {
         return new L.Rectangle([[0, 0], [1, 1]], options);
       },
 
-      setPath: function(path, data) {
+      setPath: function (path, data) {
         path.setBounds(new L.LatLngBounds(_convertToLeafletLatLngs(data.latlngs)));
         _updatePathOptions(path, data);
       },
     },
     circle: {
-      isValid: function(pathData) {
+      isValid: function (pathData) {
         var point = pathData.latlngs;
         return isValidPoint(point) && isNumber(pathData.radius);
       },
 
-      createPath: function(options) {
+      createPath: function (options) {
         return new L.Circle([0, 0], 1, options);
       },
 
-      setPath: function(path, data) {
+      setPath: function (path, data) {
         path.setLatLng(_convertToLeafletLatLng(data.latlngs));
         if (isDefined(data.radius)) {
           path.setRadius(data.radius);
@@ -214,16 +214,16 @@ angular.module('leaflet-directive').factory('leafletPathsHelpers', function($roo
       },
     },
     circleMarker: {
-      isValid: function(pathData) {
+      isValid: function (pathData) {
         var point = pathData.latlngs;
         return isValidPoint(point) && isNumber(pathData.radius);
       },
 
-      createPath: function(options) {
+      createPath: function (options) {
         return new L.CircleMarker([0, 0], options);
       },
 
-      setPath: function(path, data) {
+      setPath: function (path, data) {
         path.setLatLng(_convertToLeafletLatLng(data.latlngs));
         if (isDefined(data.radius)) {
           path.setRadius(data.radius);
@@ -234,7 +234,7 @@ angular.module('leaflet-directive').factory('leafletPathsHelpers', function($roo
     },
   };
 
-  var _getPathData = function(path) {
+  var _getPathData = function (path) {
     var pathData = {};
     if (path.latlngs) {
       pathData.latlngs = path.latlngs;
@@ -248,7 +248,7 @@ angular.module('leaflet-directive').factory('leafletPathsHelpers', function($roo
   };
 
   return {
-    setPathOptions: function(leafletPath, pathType, data) {
+    setPathOptions: function (leafletPath, pathType, data) {
       if (!isDefined(pathType)) {
         pathType = 'polyline';
       }
@@ -256,7 +256,7 @@ angular.module('leaflet-directive').factory('leafletPathsHelpers', function($roo
       pathTypes[pathType].setPath(leafletPath, data);
     },
 
-    createPath: function(name, path, defaults) {
+    createPath: function (name, path, defaults) {
       if (!isDefined(path.type)) {
         path.type = 'polyline';
       }

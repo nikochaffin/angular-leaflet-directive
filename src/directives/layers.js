@@ -1,18 +1,18 @@
-angular.module('leaflet-directive').directive('layers', function($log, $q, leafletData, leafletHelpers, leafletLayerHelpers, leafletControlHelpers) {
+angular.module('leaflet-directive').directive('layers', function ($log, $q, leafletData, leafletHelpers, leafletLayerHelpers, leafletControlHelpers) {
 
   return {
     restrict: 'A',
     scope: false,
     replace: false,
     require: 'leaflet',
-    controller: function($scope) {
+    controller: function ($scope) {
       $scope._leafletLayers = $q.defer();
-      this.getLayers = function() {
+      this.getLayers = function () {
         return $scope._leafletLayers.promise;
       };
     },
 
-    link: function(scope, element, attrs, controller) {
+    link: function (scope, element, attrs, controller) {
       var isDefined = leafletHelpers.isDefined;
       var leafletLayers = {};
       var leafletScope  = controller.getLeafletScope();
@@ -23,7 +23,7 @@ angular.module('leaflet-directive').directive('layers', function($log, $q, leafl
       var updateLayersControl = leafletControlHelpers.updateLayersControl;
       var isLayersControlVisible = false;
 
-      controller.getMap().then(function(map) {
+      controller.getMap().then(function (map) {
 
         // We have baselayers to add to the map
         scope._leafletLayers.resolve(leafletLayers);
@@ -79,7 +79,7 @@ angular.module('leaflet-directive').directive('layers', function($log, $q, leafl
         }
 
         // Watch for the base layers
-        leafletScope.$watch('layers.baselayers', function(newBaseLayers, oldBaseLayers) {
+        leafletScope.$watch('layers.baselayers', function (newBaseLayers, oldBaseLayers) {
           if (angular.equals(newBaseLayers, oldBaseLayers)) {
             isLayersControlVisible = updateLayersControl(map, mapId, isLayersControlVisible, newBaseLayers, layers.overlays, leafletLayers);
             return true;
@@ -143,7 +143,7 @@ angular.module('leaflet-directive').directive('layers', function($log, $q, leafl
         }, true);
 
         // Watch for the overlay layers
-        leafletScope.$watch('layers.overlays', function(newOverlayLayers, oldOverlayLayers) {
+        leafletScope.$watch('layers.overlays', function (newOverlayLayers, oldOverlayLayers) {
           if (angular.equals(newOverlayLayers, oldOverlayLayers)) {
             isLayersControlVisible = updateLayersControl(map, mapId, isLayersControlVisible, layers.baselayers, newOverlayLayers, leafletLayers);
             return true;

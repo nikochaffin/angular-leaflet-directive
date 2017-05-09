@@ -4,7 +4,7 @@
 /*jshint globalstrict: true*/
 /* jasmine specs for directives go here */
 
-describe('Plugin: VectorMarkers', function() {
+describe('Plugin: VectorMarkers', function () {
   var $compile;
   var $rootScope;
   var scope;
@@ -12,7 +12,7 @@ describe('Plugin: VectorMarkers', function() {
   var leafletHelpers;
 
   beforeEach(module('leaflet-directive'));
-  beforeEach(inject(function(_$compile_, _$rootScope_, _leafletData_, _leafletHelpers_) {
+  beforeEach(inject(function (_$compile_, _$rootScope_, _leafletData_, _leafletHelpers_) {
     $compile = _$compile_;
     $rootScope = _$rootScope_;
     scope = $rootScope.$new();
@@ -20,18 +20,18 @@ describe('Plugin: VectorMarkers', function() {
     leafletHelpers = _leafletHelpers_;
   }));
 
-  afterEach(inject(function($rootScope) {
+  afterEach(inject(function ($rootScope) {
     $rootScope.$apply();
   }));
 
-  it('should load plugin for the vector markers', function() {
+  it('should load plugin for the vector markers', function () {
     var plugin = leafletHelpers.VectorMarkersPlugin;
 
     expect(plugin).toBeDefined();
     expect(plugin.isLoaded()).toBeTruthy();
   });
 
-  it('should create a new vector marker', function() {
+  it('should create a new vector marker', function () {
     var myMarker = {
       lat: 51,
       lng: 0,
@@ -54,14 +54,14 @@ describe('Plugin: VectorMarkers', function() {
 
     var plugin = leafletHelpers.VectorMarkersPlugin;
 
-    leafletData.getMarkers().then(function(markers) {
+    leafletData.getMarkers().then(function (markers) {
       expect(markers).toBeDefined();
       expect(markers.myMarker).toBeDefined();
       expect(plugin.is(markers.myMarker.options.icon)).toBeTruthy();
     });
   });
 
-  it('icon should differ from a common marker\'s icon', function() {
+  it('icon should differ from a common marker\'s icon', function () {
     var commonMarker = {
           lat: 51,
           lng: 0,
@@ -90,7 +90,7 @@ describe('Plugin: VectorMarkers', function() {
 
     var plugin = leafletHelpers.VectorMarkersPlugin;
 
-    leafletData.getMarkers().then(function(markers) {
+    leafletData.getMarkers().then(function (markers) {
       expect(markers).toBeDefined();
       expect(markers.commonMarker).toBeDefined();
       expect(markers.vectorMarker).toBeDefined();

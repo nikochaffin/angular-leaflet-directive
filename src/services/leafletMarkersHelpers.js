@@ -1,4 +1,4 @@
-angular.module('leaflet-directive').service('leafletMarkersHelpers', function($rootScope, $timeout, leafletHelpers, $log, $compile, leafletGeoJsonHelpers) {
+angular.module('leaflet-directive').service('leafletMarkersHelpers', function ($rootScope, $timeout, leafletHelpers, $log, $compile, leafletGeoJsonHelpers) {
   var isDefined = leafletHelpers.isDefined;
   var defaultTo = leafletHelpers.defaultTo;
   var MarkerClusterPlugin = leafletHelpers.MarkerClusterPlugin;
@@ -16,22 +16,22 @@ angular.module('leaflet-directive').service('leafletMarkersHelpers', function($r
   var geoHlp = leafletGeoJsonHelpers;
   var errorHeader = leafletHelpers.errorHeader;
 
-  var _string = function(marker) {
+  var _string = function (marker) {
     //this exists since JSON.stringify barfs on cyclic
     var retStr = '';
-    ['_icon', '_latlng', '_leaflet_id', '_map', '_shadow'].forEach(function(prop) {
+    ['_icon', '_latlng', '_leaflet_id', '_map', '_shadow'].forEach(function (prop) {
       retStr += prop + ': ' + defaultTo(marker[prop], 'undefined') + ' \n';
     });
 
     return '[leafletMarker] : \n' + retStr;
   };
 
-  var _log = function(marker, useConsole) {
+  var _log = function (marker, useConsole) {
     var logger = useConsole ? console : $log;
     logger.debug(_string(marker));
   };
 
-  var createLeafletIcon = function(iconData) {
+  var createLeafletIcon = function (iconData) {
     if (isDefined(iconData) && isDefined(iconData.type) && iconData.type === 'awesomeMarker') {
       if (!AwesomeMarkersPlugin.isLoaded()) {
         $log.error(errorHeader + ' The AwesomeMarkers Plugin is not loaded.');
@@ -102,17 +102,17 @@ angular.module('leaflet-directive').service('leafletMarkersHelpers', function($r
     return new L.Icon(iconData);
   };
 
-  var _resetMarkerGroup = function(groupName) {
+  var _resetMarkerGroup = function (groupName) {
     if (isDefined(groups[groupName])) {
       groups.splice(groupName, 1);
     }
   };
 
-  var _resetMarkerGroups = function() {
+  var _resetMarkerGroups = function () {
     groups = {};
   };
 
-  var _deleteMarker = function(marker, map, layers) {
+  var _deleteMarker = function (marker, map, layers) {
     marker.closePopup();
 
     // There is no easy way to know if a marker is added to a layer, so we search for it
@@ -141,7 +141,7 @@ angular.module('leaflet-directive').service('leafletMarkersHelpers', function($r
     }
   };
 
-  var adjustPopupPan = function(marker, map) {
+  var adjustPopupPan = function (marker, map) {
     var containerHeight = marker._popup._container.offsetHeight;
     var layerPos = new L.Point(marker._popup._containerLeft, -containerHeight - marker._popup._containerBottom);
     var containerPos = map.layerPointToContainerPoint(layerPos);
@@ -150,18 +150,18 @@ angular.module('leaflet-directive').service('leafletMarkersHelpers', function($r
     }
   };
 
-  var compilePopup = function(marker, markerScope) {
+  var compilePopup = function (marker, markerScope) {
     $compile(marker._popup._contentNode)(markerScope);
   };
 
-  var updatePopup = function(marker, markerScope, map) {
+  var updatePopup = function (marker, markerScope, map) {
     //The innerText should be more than 1 once angular has compiled.
     //We need to keep trying until angular has compiled before we _updateLayout and _updatePosition
     //This should take care of any scenario , eg ngincludes, whatever.
     //Is there a better way to check for this?
     var innerText = marker._popup._contentNode.innerText || marker._popup._contentNode.textContent;
     if (innerText.length < 1) {
-      $timeout(function() {
+      $timeout(function () {
         updatePopup(marker, markerScope, map);
       });
     }
@@ -180,7 +180,7 @@ angular.module('leaflet-directive').service('leafletMarkersHelpers', function($r
     return reflow;
   };
 
-  var _manageOpenPopup = function(marker, markerData, map) {
+  var _manageOpenPopup = function (marker, markerData, map) {
     // The marker may provide a scope returning function used to compile the message
     // default to $rootScope otherwise
     var markerScope = angular.isFunction(markerData.getMessageScope) ? markerData.getMessageScope() : $rootScope;
@@ -197,7 +197,7 @@ angular.module('leaflet-directive').service('leafletMarkersHelpers', function($r
     }
   };
 
-  var _manageOpenLabel = function(marker, markerData) {
+  var _manageOpenLabel = function (marker, markerData) {
     var markerScope = angular.isFunction(markerData.getMessageScope) ? markerData.getMessageScope() : $rootScope;
     var labelScope = angular.isFunction(markerData.getLabelScope) ? markerData.getLabelScope() : markerScope;
     var compileMessage = isDefined(markerData.compileMessage) ? markerData.compileMessage : true;
@@ -213,7 +213,7 @@ angular.module('leaflet-directive').service('leafletMarkersHelpers', function($r
     }
   };
 
-  var _updateMarker = function(markerData, oldMarkerData, marker, name, leafletScope, layers, map) {
+  var _updateMarker = function (markerData, oldMarkerData, marker, name, leafletScope, layers, map) {
     if (!isDefined(oldMarkerData)) {
       return;
     }
@@ -451,7 +451,7 @@ angular.module('leaflet-directive').service('leafletMarkersHelpers', function($r
 
     manageOpenLabel: _manageOpenLabel,
 
-    createMarker: function(markerData) {
+    createMarker: function (markerData) {
       if (!isDefined(markerData) || !geoHlp.validateCoords(markerData)) {
         $log.error(errorHeader + 'The marker definition is not valid.');
         return;
@@ -490,7 +490,7 @@ angular.module('leaflet-directive').service('leafletMarkersHelpers', function($r
       return marker;
     },
 
-    addMarkerToGroup: function(marker, groupName, groupOptions, map) {
+    addMarkerToGroup: function (marker, groupName, groupOptions, map) {
       if (!isString(groupName)) {
         $log.error(errorHeader + 'The marker group you have specified is invalid.');
         return;
@@ -509,9 +509,9 @@ angular.module('leaflet-directive').service('leafletMarkersHelpers', function($r
       groups[groupName].addLayer(marker);
     },
 
-    listenMarkerEvents: function(marker, markerData, leafletScope, doWatch, map) {
-      marker.on('popupopen', function(/* event */) {
-        safeApply(leafletScope, function() {
+    listenMarkerEvents: function (marker, markerData, leafletScope, doWatch, map) {
+      marker.on('popupopen', function (/* event */) {
+        safeApply(leafletScope, function () {
           if (isDefined(marker._popup) || isDefined(marker._popup._contentNode)) {
             markerData.focus = true;
             _manageOpenPopup(marker, markerData, map);//needed since markerData is now a copy
@@ -519,14 +519,14 @@ angular.module('leaflet-directive').service('leafletMarkersHelpers', function($r
         });
       });
 
-      marker.on('popupclose', function(/* event */) {
-        safeApply(leafletScope, function() {
+      marker.on('popupclose', function (/* event */) {
+        safeApply(leafletScope, function () {
           markerData.focus = false;
         });
       });
 
-      marker.on('add', function(/* event */) {
-        safeApply(leafletScope, function() {
+      marker.on('add', function (/* event */) {
+        safeApply(leafletScope, function () {
           if ('label' in markerData)
               _manageOpenLabel(marker, markerData);
         });
@@ -535,11 +535,11 @@ angular.module('leaflet-directive').service('leafletMarkersHelpers', function($r
 
     updateMarker: _updateMarker,
 
-    addMarkerWatcher: function(marker, name, leafletScope, layers, map, isDeepWatch) {
+    addMarkerWatcher: function (marker, name, leafletScope, layers, map, isDeepWatch) {
       var markerWatchPath = Helpers.getObjectArrayPath('markers.' + name);
       isDeepWatch = defaultTo(isDeepWatch, true);
 
-      var clearWatch = leafletScope.$watch(markerWatchPath, function(markerData, oldMarkerData) {
+      var clearWatch = leafletScope.$watch(markerWatchPath, function (markerData, oldMarkerData) {
         if (!isDefined(markerData)) {
           _deleteMarker(marker, map, layers);
           clearWatch();

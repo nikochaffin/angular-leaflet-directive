@@ -1,4 +1,4 @@
-angular.module('leaflet-directive').directive('paths', function($log, $q, leafletData, leafletMapDefaults, leafletHelpers, leafletPathsHelpers, leafletPathEvents) {
+angular.module('leaflet-directive').directive('paths', function ($log, $q, leafletData, leafletMapDefaults, leafletHelpers, leafletPathsHelpers, leafletPathEvents) {
 
   return {
     restrict: 'A',
@@ -6,7 +6,7 @@ angular.module('leaflet-directive').directive('paths', function($log, $q, leafle
     replace: false,
     require: ['leaflet', '?layers'],
 
-    link: function(scope, element, attrs, controller) {
+    link: function (scope, element, attrs, controller) {
       var mapController = controller[0];
       var isDefined = leafletHelpers.isDefined;
       var isString = leafletHelpers.isString;
@@ -16,7 +16,7 @@ angular.module('leaflet-directive').directive('paths', function($log, $q, leafle
       var bindPathEvents = leafletPathEvents.bindPathEvents;
       var setPathOptions = leafletPathsHelpers.setPathOptions;
 
-      mapController.getMap().then(function(map) {
+      mapController.getMap().then(function (map) {
         var defaults = leafletMapDefaults.getDefaults(attrs.id);
         var getLayers;
 
@@ -24,7 +24,7 @@ angular.module('leaflet-directive').directive('paths', function($log, $q, leafle
         if (isDefined(controller[1])) {
           getLayers = controller[1].getLayers;
         } else {
-          getLayers = function() {
+          getLayers = function () {
             var deferred = $q.defer();
             deferred.resolve();
             return deferred.promise;
@@ -35,7 +35,7 @@ angular.module('leaflet-directive').directive('paths', function($log, $q, leafle
           return;
         }
 
-        getLayers().then(function(layers) {
+        getLayers().then(function (layers) {
 
           var leafletPaths = {};
           leafletData.setPaths(leafletPaths, attrs.id);
@@ -44,8 +44,8 @@ angular.module('leaflet-directive').directive('paths', function($log, $q, leafle
           var shouldWatch = (!isDefined(attrs.watchPaths) || attrs.watchPaths === 'true');
 
           // Function for listening every single path once created
-          var watchPathFn = function(leafletPath, name) {
-            var clearWatch = leafletScope.$watch('paths["' + name + '"]', function(pathData, old) {
+          var watchPathFn = function (leafletPath, name) {
+            var clearWatch = leafletScope.$watch('paths["' + name + '"]', function (pathData, old) {
               if (!isDefined(pathData)) {
                 if (isDefined(old.layer)) {
                   for (var i in layers.overlays) {
@@ -63,7 +63,7 @@ angular.module('leaflet-directive').directive('paths', function($log, $q, leafle
             }, true);
           };
 
-          leafletScope.$watchCollection('paths', function(newPaths) {
+          leafletScope.$watchCollection('paths', function (newPaths) {
 
             // Delete paths (by name) from the array
             for (var name in leafletPaths) {

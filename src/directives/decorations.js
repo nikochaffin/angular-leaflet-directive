@@ -1,4 +1,4 @@
-angular.module('leaflet-directive').directive('decorations', function($log, leafletHelpers) {
+angular.module('leaflet-directive').directive('decorations', function ($log, leafletHelpers) {
 
   return {
     restrict: 'A',
@@ -6,7 +6,7 @@ angular.module('leaflet-directive').directive('decorations', function($log, leaf
     replace: false,
     require: 'leaflet',
 
-    link: function(scope, element, attrs, controller) {
+    link: function (scope, element, attrs, controller) {
       var leafletScope = controller.getLeafletScope();
       var PolylineDecoratorPlugin = leafletHelpers.PolylineDecoratorPlugin;
       var isDefined = leafletHelpers.isDefined;
@@ -34,8 +34,8 @@ angular.module('leaflet-directive').directive('decorations', function($log, leaf
         }
       }
 
-      controller.getMap().then(function(map) {
-        leafletScope.$watch('decorations', function(newDecorations) {
+      controller.getMap().then(function (map) {
+        leafletScope.$watch('decorations', function (newDecorations) {
           for (var name in leafletDecorations) {
             if (!isDefined(newDecorations[name]) || !angular.equals(newDecorations[name], leafletDecorations)) {
               map.removeLayer(leafletDecorations[name]);

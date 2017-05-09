@@ -1,28 +1,28 @@
 angular.module('leaflet-directive')
-.factory('leafletMarkerEvents', function($rootScope, $q, $log, leafletHelpers, LeafletEventsHelpersFactory, leafletLabelEvents) {
+.factory('leafletMarkerEvents', function ($rootScope, $q, $log, leafletHelpers, LeafletEventsHelpersFactory, leafletLabelEvents) {
   var safeApply = leafletHelpers.safeApply;
   var isDefined = leafletHelpers.isDefined;
   var Helpers = leafletHelpers;
   var lblHelp = leafletLabelEvents;
   var EventsHelper = LeafletEventsHelpersFactory;
 
-  var MarkerEvents = function() {
+  var MarkerEvents = function () {
       EventsHelper.call(this, 'leafletDirectiveMarker', 'markers');
     };
 
   MarkerEvents.prototype = new EventsHelper();
 
-  MarkerEvents.prototype.genDispatchEvent = function(maybeMapId, eventName, logic, leafletScope, lObject, name, model, layerName) {
+  MarkerEvents.prototype.genDispatchEvent = function (maybeMapId, eventName, logic, leafletScope, lObject, name, model, layerName) {
     var handle = EventsHelper.prototype
         .genDispatchEvent.call(this, maybeMapId, eventName, logic, leafletScope, lObject, name, model, layerName);
-    return function(e) {
+    return function (e) {
       // Broadcast old marker click name for backwards compatibility
       if (eventName === 'click') {
-        safeApply(leafletScope, function() {
+        safeApply(leafletScope, function () {
           $rootScope.$broadcast('leafletDirectiveMarkersClick', name);
         });
       } else if (eventName === 'dragend') {
-        safeApply(leafletScope, function() {
+        safeApply(leafletScope, function () {
           model.lat = lObject.getLatLng().lat;
           model.lng = lObject.getLatLng().lng;
         });
@@ -36,7 +36,7 @@ angular.module('leaflet-directive')
     };
   };
 
-  MarkerEvents.prototype.getAvailableEvents = function() { return [
+  MarkerEvents.prototype.getAvailableEvents = function () { return [
       'click',
       'dblclick',
       'mousedown',
@@ -58,7 +58,7 @@ angular.module('leaflet-directive')
       ];
   };
 
-  MarkerEvents.prototype.bindEvents = function(maybeMapId, lObject, name, model, leafletScope, layerName) {
+  MarkerEvents.prototype.bindEvents = function (maybeMapId, lObject, name, model, leafletScope, layerName) {
       var logic = EventsHelper.prototype.bindEvents.call(this, maybeMapId, lObject, name, model, leafletScope, layerName);
 
       if (Helpers.LabelPlugin.isLoaded() && isDefined(lObject.label)) {

@@ -1,4 +1,4 @@
-angular.module('leaflet-directive').directive('tiles', function($log, leafletData, leafletMapDefaults, leafletHelpers) {
+angular.module('leaflet-directive').directive('tiles', function ($log, leafletData, leafletMapDefaults, leafletHelpers) {
 
   return {
     restrict: 'A',
@@ -6,7 +6,7 @@ angular.module('leaflet-directive').directive('tiles', function($log, leafletDat
     replace: false,
     require: 'leaflet',
 
-    link: function(scope, element, attrs, controller) {
+    link: function (scope, element, attrs, controller) {
       var isDefined = leafletHelpers.isDefined;
       var leafletScope  = controller.getLeafletScope();
       var tiles = leafletScope.tiles;
@@ -16,10 +16,10 @@ angular.module('leaflet-directive').directive('tiles', function($log, leafletDat
         return;
       }
 
-      controller.getMap().then(function(map) {
+      controller.getMap().then(function (map) {
         var defaults = leafletMapDefaults.getDefaults(attrs.id);
         var tileLayerObj;
-        leafletScope.$watch('tiles', function(tiles, oldtiles) {
+        leafletScope.$watch('tiles', function (tiles, oldtiles) {
           var tileLayerOptions = defaults.tileLayerOptions;
           var tileLayerUrl = defaults.tileLayer;
 

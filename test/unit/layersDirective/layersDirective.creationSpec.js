@@ -3,25 +3,25 @@
 /*jshint -W117 */
 /*jshint globalstrict: true*/
 /* jasmine specs for directives go here */
-describe('Directive: leaflet: layers.creation', function() {
+describe('Directive: leaflet: layers.creation', function () {
   var $compile;
   var $rootScope;
   var leafletData;
   var scope;
 
   beforeEach(module('leaflet-directive'));
-  beforeEach(inject(function(_$compile_, _$rootScope_, _leafletData_) {
+  beforeEach(inject(function (_$compile_, _$rootScope_, _leafletData_) {
     $compile = _$compile_;
     $rootScope = _$rootScope_;
     leafletData = _leafletData_;
     scope = $rootScope.$new();
   }));
 
-  afterEach(inject(function($rootScope) {
+  afterEach(inject(function ($rootScope) {
     $rootScope.$apply();
   }));
 
-  it('should not create layers if not specified', function() {
+  it('should not create layers if not specified', function () {
     angular.extend(scope, {
       layers: {},
     });
@@ -30,12 +30,12 @@ describe('Directive: leaflet: layers.creation', function() {
     var element = angular.element('<leaflet></leaflet>');
     element = $compile(element)(scope);
     scope.$digest();
-    leafletData.getLayers().then(function(layers) {
+    leafletData.getLayers().then(function (layers) {
       expect(layers).toBe({});
     });
   });
 
-  it('miss-configured layers persist', function() {
+  it('miss-configured layers persist', function () {
     var nolayers = {
       baselayers: {},
       overlays: {},
@@ -48,12 +48,12 @@ describe('Directive: leaflet: layers.creation', function() {
     var element = angular.element('<leaflet layers="layers"></leaflet>');
     element = $compile(element)(scope);
     scope.$digest();
-    leafletData.getLayers().then(function(layers) {
+    leafletData.getLayers().then(function (layers) {
       expect(layers).toEqual(nolayers);
     });
   });
 
-  it('should create layers if baselayers is defined with data', function() {
+  it('should create layers if baselayers is defined with data', function () {
     angular.extend(scope, {
       layers: {
         baselayers: {
@@ -65,13 +65,13 @@ describe('Directive: leaflet: layers.creation', function() {
     var element = angular.element('<leaflet layers="layers"></leaflet>');
     element = $compile(element)(scope);
     scope.$digest();
-    leafletData.getLayers().then(function(layers) {
+    leafletData.getLayers().then(function (layers) {
       expect(layers).not.toBe(undefined);
       expect(layers.baselayers).toEqual({});
     });
   });
 
-  it('should create one layer if correctly configured', function() {
+  it('should create one layer if correctly configured', function () {
     angular.extend(scope, {
       layers: {
         baselayers: {
@@ -93,17 +93,17 @@ describe('Directive: leaflet: layers.creation', function() {
     var element = angular.element('<leaflet layers="layers"></leaflet>');
     element = $compile(element)(scope);
     var map;
-    leafletData.getMap().then(function(leafletMap) {
+    leafletData.getMap().then(function (leafletMap) {
       map = leafletMap;
     });
 
     scope.$digest();
-    leafletData.getLayers().then(function(layers) {
+    leafletData.getLayers().then(function (layers) {
       expect(map.hasLayer(layers.baselayers.osm)).toBe(true);
     });
   });
 
-  it('should create image overlay layer if correctly configured', function() {
+  it('should create image overlay layer if correctly configured', function () {
     angular.extend(scope, {
       layers: {
         baselayers: {
@@ -120,17 +120,17 @@ describe('Directive: leaflet: layers.creation', function() {
     var element = angular.element('<leaflet layers="layers"></leaflet>');
     element = $compile(element)(scope);
     var map;
-    leafletData.getMap().then(function(leafletMap) {
+    leafletData.getMap().then(function (leafletMap) {
       map = leafletMap;
     });
 
     scope.$digest();
-    leafletData.getLayers().then(function(layers) {
+    leafletData.getLayers().then(function (layers) {
       expect(map.hasLayer(layers.baselayers.imageOverlay)).toBe(true);
     });
   });
 
-  it('should create two layers if correctly configured', function() {
+  it('should create two layers if correctly configured', function () {
     angular.extend(scope, {
       layers: {
         baselayers: {
@@ -162,19 +162,19 @@ describe('Directive: leaflet: layers.creation', function() {
     var element = angular.element('<leaflet layers="layers"></leaflet>');
     element = $compile(element)(scope);
     var map;
-    leafletData.getMap().then(function(leafletMap) {
+    leafletData.getMap().then(function (leafletMap) {
       map = leafletMap;
     });
 
     scope.$digest();
-    leafletData.getLayers().then(function(layers) {
+    leafletData.getLayers().then(function (layers) {
       expect(Object.keys(layers.baselayers).length).toEqual(2);
       expect(map.hasLayer(layers.baselayers.cycle)).toBe(true);
       expect(map.hasLayer(layers.baselayers.osm)).toBe(false);
     });
   });
 
-  it('should create two different type layers if correctly configured', function() {
+  it('should create two different type layers if correctly configured', function () {
     angular.extend(scope, {
       layers: {
         baselayers: {
@@ -203,12 +203,12 @@ describe('Directive: leaflet: layers.creation', function() {
     });
     var element = angular.element('<leaflet layers="layers"></leaflet>');
     element = $compile(element)(scope);
-    leafletData.getLayers().then(function(layers) {
+    leafletData.getLayers().then(function (layers) {
       expect(Object.keys(layers.baselayers).length).toEqual(2);
     });
   });
 
-  it('should refuse to create malformed layers', function() {
+  it('should refuse to create malformed layers', function () {
     angular.extend(scope, {
       layers: {
         baselayers: {
@@ -298,7 +298,7 @@ describe('Directive: leaflet: layers.creation', function() {
     });
     var element = angular.element('<leaflet layers="layers"></leaflet>');
     element = $compile(element)(scope);
-    leafletData.getLayers().then(function(layers) {
+    leafletData.getLayers().then(function (layers) {
       expect(Object.keys(layers.baselayers).length).toEqual(0);
     });
   });

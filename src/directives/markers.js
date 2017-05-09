@@ -1,5 +1,5 @@
 angular.module('leaflet-directive').directive('markers',
-    function($log, $rootScope, $q, leafletData, leafletHelpers, leafletMapDefaults,
+    function ($log, $rootScope, $q, leafletData, leafletHelpers, leafletMapDefaults,
               leafletMarkersHelpers, leafletMarkerEvents, leafletIterators, leafletWatchHelpers,
               leafletDirectiveControlsHelpers) {
       //less terse vars to helpers
@@ -18,7 +18,7 @@ angular.module('leaflet-directive').directive('markers',
       var maybeWatch = leafletWatchHelpers.maybeWatch;
       var extendDirectiveControls = leafletDirectiveControlsHelpers.extend;
 
-      var _getLMarker = function(leafletMarkers, name, maybeLayerName) {
+      var _getLMarker = function (leafletMarkers, name, maybeLayerName) {
         if (!Object.keys(leafletMarkers).length) return;
         if (maybeLayerName && isString(maybeLayerName)) {
           if (!leafletMarkers[maybeLayerName] || !Object.keys(leafletMarkers[maybeLayerName]).length)
@@ -29,7 +29,7 @@ angular.module('leaflet-directive').directive('markers',
         return leafletMarkers[name];
       };
 
-      var _setLMarker = function(lObject, leafletMarkers, name, maybeLayerName) {
+      var _setLMarker = function (lObject, leafletMarkers, name, maybeLayerName) {
         if (maybeLayerName && isString(maybeLayerName)) {
           if (!isDefined(leafletMarkers[maybeLayerName]))
               leafletMarkers[maybeLayerName] = {};
@@ -39,7 +39,7 @@ angular.module('leaflet-directive').directive('markers',
         return lObject;
       };
 
-      var _maybeAddMarkerToLayer = function(layerName, layers, model, marker, doIndividualWatch, map) {
+      var _maybeAddMarkerToLayer = function (layerName, layers, model, marker, doIndividualWatch, map) {
 
         if (!isString(layerName)) {
           $log.error(errorHeader + ' A layername must be a string');
@@ -75,7 +75,7 @@ angular.module('leaflet-directive').directive('markers',
       };
 
       //TODO: move to leafletMarkersHelpers??? or make a new class/function file (leafletMarkersHelpers is large already)
-      var _addMarkers = function(mapId, markersToRender, oldModels, map, layers, leafletMarkers, leafletScope,
+      var _addMarkers = function (mapId, markersToRender, oldModels, map, layers, leafletMarkers, leafletScope,
                                  watchOptions, maybeLayerName, skips) {
         for (var newName in markersToRender) {
           if (skips[newName])
@@ -148,7 +148,7 @@ angular.module('leaflet-directive').directive('markers',
         }
       };
 
-      var _seeWhatWeAlreadyHave = function(markerModels, oldMarkerModels, lMarkers, isEqual, cb) {
+      var _seeWhatWeAlreadyHave = function (markerModels, oldMarkerModels, lMarkers, isEqual, cb) {
         var hasLogged = false;
         var equals = false;
         var oldMarker;
@@ -180,19 +180,19 @@ angular.module('leaflet-directive').directive('markers',
         }
       };
 
-      var _destroy = function(markerModels, oldMarkerModels, lMarkers, map, layers) {
+      var _destroy = function (markerModels, oldMarkerModels, lMarkers, map, layers) {
         _seeWhatWeAlreadyHave(markerModels, oldMarkerModels, lMarkers, false,
-            function(newMarker, oldMarker, lMarkerName) {
+            function (newMarker, oldMarker, lMarkerName) {
               $log.debug(errorHeader + '[marker] is deleting marker: ' + lMarkerName);
               deleteMarker(lMarkers[lMarkerName], map, layers);
               delete lMarkers[lMarkerName];
             });
       };
 
-      var _getNewModelsToSkipp =  function(newModels, oldModels, lMarkers) {
+      var _getNewModelsToSkipp =  function (newModels, oldModels, lMarkers) {
         var skips = {};
         _seeWhatWeAlreadyHave(newModels, oldModels, lMarkers, true,
-            function(newMarker, oldMarker, lMarkerName) {
+            function (newMarker, oldMarker, lMarkerName) {
               $log.debug(errorHeader + '[marker] is already rendered, marker: ' + lMarkerName);
               skips[lMarkerName] = newMarker;
             });
@@ -206,11 +206,11 @@ angular.module('leaflet-directive').directive('markers',
         replace: false,
         require: ['leaflet', '?layers'],
 
-        link: function(scope, element, attrs, controller) {
+        link: function (scope, element, attrs, controller) {
           var mapController = controller[0];
           var leafletScope  = mapController.getLeafletScope();
 
-          mapController.getMap().then(function(map) {
+          mapController.getMap().then(function (map) {
             var leafletMarkers = {};
             var getLayers;
 
@@ -218,7 +218,7 @@ angular.module('leaflet-directive').directive('markers',
             if (isDefined(controller[1])) {
               getLayers = controller[1].getLayers;
             } else {
-              getLayers = function() {
+              getLayers = function () {
                 var deferred = $q.defer();
                 deferred.resolve();
                 return deferred.promise;
@@ -234,10 +234,10 @@ angular.module('leaflet-directive').directive('markers',
 
             var isNested = (isDefined(attrs.markersNested) && Helpers.isTruthy(attrs.markersNested));
 
-            getLayers().then(function(layers) {
-              var _clean = function(models, oldModels) {
+            getLayers().then(function (layers) {
+              var _clean = function (models, oldModels) {
                 if (isNested) {
-                  $it.each(models, function(markerToMaybeDel, layerName) {
+                  $it.each(models, function (markerToMaybeDel, layerName) {
                     var oldModel = isDefined(oldModel) ? oldModels[layerName] : undefined;
                     _destroy(markerToMaybeDel, oldModel, leafletMarkers[layerName], map, layers);
                   });
@@ -248,11 +248,11 @@ angular.module('leaflet-directive').directive('markers',
                 _destroy(models, oldModels, leafletMarkers, map, layers);
               };
 
-              var _create = function(models, oldModels) {
+              var _create = function (models, oldModels) {
                 _clean(models, oldModels);
                 var skips = null;
                 if (isNested) {
-                  $it.each(models, function(markersToAdd, layerName) {
+                  $it.each(models, function (markersToAdd, layerName) {
                     var oldModel = isDefined(oldModel) ? oldModels[layerName] : undefined;
                     skips = _getNewModelsToSkipp(models[layerName], oldModel, leafletMarkers[layerName]);
                     _addMarkers(attrs.id, markersToAdd, oldModels, map, layers, leafletMarkers, leafletScope,
@@ -270,7 +270,7 @@ angular.module('leaflet-directive').directive('markers',
               extendDirectiveControls(attrs.id, 'markers', _create, _clean);
               leafletData.setMarkers(leafletMarkers, attrs.id);
 
-              maybeWatch(leafletScope, 'markers', watchOptions, function(newMarkers, oldMarkers) {
+              maybeWatch(leafletScope, 'markers', watchOptions, function (newMarkers, oldMarkers) {
                 _create(newMarkers, oldMarkers);
               });
             });

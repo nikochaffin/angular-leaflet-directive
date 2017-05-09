@@ -4,7 +4,7 @@
 /*jshint globalstrict: true*/
 /* jasmine specs for directives go here */
 
-describe('Directive: leaflet', function() {
+describe('Directive: leaflet', function () {
   var $compile;
   var $rootScope;
   var leafletData;
@@ -12,7 +12,7 @@ describe('Directive: leaflet', function() {
   var scope;
 
   beforeEach(module('leaflet-directive'));
-  beforeEach(inject(function(_$compile_, _$rootScope_, _leafletData_, _leafletMapDefaults_) {
+  beforeEach(inject(function (_$compile_, _$rootScope_, _leafletData_, _leafletMapDefaults_) {
     $compile = _$compile_;
     $rootScope = _$rootScope_;
     leafletData = _leafletData_;
@@ -20,21 +20,21 @@ describe('Directive: leaflet', function() {
     scope = $rootScope.$new();
   }));
 
-  afterEach(inject(function($rootScope) {
+  afterEach(inject(function ($rootScope) {
     $rootScope.$apply();
   }));
 
-  it('should set default tiles if bad tiles structure is provided', function() {
+  it('should set default tiles if bad tiles structure is provided', function () {
     angular.extend(scope, { tiles: {} });
     var element = angular.element('<leaflet tiles="tiles"></leaflet>');
     element = $compile(element)(scope);
-    leafletData.getTiles().then(function(leafletTiles) {
+    leafletData.getTiles().then(function (leafletTiles) {
       var defaults = leafletMapDefaults.getDefaults();
       expect(leafletTiles._url).toEqual(defaults.tileLayer);
     });
   });
 
-  it('should update the map tiles if the scope tiles properties changes', function() {
+  it('should update the map tiles if the scope tiles properties changes', function () {
     var tiles = {
       url: 'http://{s}.tile.opencyclemap.org/cycle/{z}/{x}/{y}.png',
     };
@@ -42,7 +42,7 @@ describe('Directive: leaflet', function() {
     var element = angular.element('<leaflet tiles="tiles"></leaflet>');
     element = $compile(element)(scope);
     var leafletTiles;
-    leafletData.getTiles().then(function(tiles) {
+    leafletData.getTiles().then(function (tiles) {
       leafletTiles = tiles;
     });
 
@@ -53,7 +53,7 @@ describe('Directive: leaflet', function() {
     expect(leafletTiles._url).toEqual('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
   });
 
-  it('should remove the map tiles if the scope tiles are changed into an empty value', function() {
+  it('should remove the map tiles if the scope tiles are changed into an empty value', function () {
     var tiles = {
       url: 'http://{s}.tile.opencyclemap.org/cycle/{z}/{x}/{y}.png',
     };
@@ -62,12 +62,12 @@ describe('Directive: leaflet', function() {
     element = $compile(element)(scope);
 
     var leafletMap;
-    leafletData.getMap().then(function(map) {
+    leafletData.getMap().then(function (map) {
       leafletMap = map;
     });
 
     var leafletTiles;
-    leafletData.getTiles().then(function(tiles) {
+    leafletData.getTiles().then(function (tiles) {
       leafletTiles = tiles;
     });
 
@@ -77,7 +77,7 @@ describe('Directive: leaflet', function() {
     expect(leafletMap.hasLayer(leafletTiles)).toBe(true);
     scope.tiles = {};
     scope.$digest();
-    leafletData.getTiles().then(function(tiles) {
+    leafletData.getTiles().then(function (tiles) {
       leafletTiles = tiles;
     });
 
@@ -85,7 +85,7 @@ describe('Directive: leaflet', function() {
     expect(leafletMap.hasLayer(leafletTiles)).toBe(false);
   });
 
-  it('should remove the old tiles from the map and add a new one if the scope tiles options are changed', function() {
+  it('should remove the old tiles from the map and add a new one if the scope tiles options are changed', function () {
     var tiles = {
       url: 'http://{s}.tile.opencyclemap.org/cycle/{z}/{x}/{y}.png',
     };
@@ -94,12 +94,12 @@ describe('Directive: leaflet', function() {
     element = $compile(element)(scope);
 
     var leafletMap;
-    leafletData.getMap().then(function(map) {
+    leafletData.getMap().then(function (map) {
       leafletMap = map;
     });
 
     var leafletTiles;
-    leafletData.getTiles().then(function(tiles) {
+    leafletData.getTiles().then(function (tiles) {
       leafletTiles = tiles;
     });
 
@@ -110,7 +110,7 @@ describe('Directive: leaflet', function() {
     scope.tiles.options = { maxZoom: 19 };
     scope.$digest();
     expect(leafletMap.hasLayer(leafletTiles)).toBe(false);
-    leafletData.getTiles().then(function(tiles) {
+    leafletData.getTiles().then(function (tiles) {
       leafletTiles = tiles;
     });
 

@@ -1,4 +1,4 @@
-angular.module('leaflet-directive').directive('maxbounds', function($log, leafletMapDefaults, leafletBoundsHelpers, leafletHelpers) {
+angular.module('leaflet-directive').directive('maxbounds', function ($log, leafletMapDefaults, leafletBoundsHelpers, leafletHelpers) {
 
   return {
     restrict: 'A',
@@ -6,13 +6,13 @@ angular.module('leaflet-directive').directive('maxbounds', function($log, leafle
     replace: false,
     require: 'leaflet',
 
-    link: function(scope, element, attrs, controller) {
+    link: function (scope, element, attrs, controller) {
       var leafletScope  = controller.getLeafletScope();
       var isValidBounds = leafletBoundsHelpers.isValidBounds;
       var isNumber = leafletHelpers.isNumber;
 
-      controller.getMap().then(function(map) {
-        leafletScope.$watch('maxbounds', function(maxbounds) {
+      controller.getMap().then(function (map) {
+        leafletScope.$watch('maxbounds', function (maxbounds) {
           if (!isValidBounds(maxbounds)) {
             // Unset any previous maxbounds
             map.setMaxBounds();

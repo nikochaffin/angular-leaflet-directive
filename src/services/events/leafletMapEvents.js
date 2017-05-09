@@ -1,9 +1,9 @@
 angular.module('leaflet-directive')
-.factory('leafletMapEvents', function($rootScope, $q, $log, leafletHelpers, leafletEventsHelpers, leafletIterators) {
+.factory('leafletMapEvents', function ($rootScope, $q, $log, leafletHelpers, leafletEventsHelpers, leafletIterators) {
   var isDefined = leafletHelpers.isDefined;
   var fire = leafletEventsHelpers.fire;
 
-  var _getAvailableMapEvents = function() {
+  var _getAvailableMapEvents = function () {
     return [
         'click',
         'dblclick',
@@ -52,10 +52,10 @@ angular.module('leaflet-directive')
     ];
   };
 
-  var _genDispatchMapEvent = function(scope, eventName, logic, maybeMapId) {
+  var _genDispatchMapEvent = function (scope, eventName, logic, maybeMapId) {
     if (maybeMapId)
       maybeMapId = maybeMapId + '.';
-    return function(e) {
+    return function (e) {
       // Put together broadcast name
       var broadcastName = 'leafletDirectiveMap.' + maybeMapId + eventName;
       $log.debug(broadcastName);
@@ -65,11 +65,11 @@ angular.module('leaflet-directive')
     };
   };
 
-  var _notifyCenterChangedToBounds = function(scope) {
+  var _notifyCenterChangedToBounds = function (scope) {
     scope.$broadcast('boundsChanged');
   };
 
-  var _notifyCenterUrlHashChanged = function(scope, map, attrs, search) {
+  var _notifyCenterUrlHashChanged = function (scope, map, attrs, search) {
     if (!isDefined(attrs.urlHashCenter)) {
       return;
     }
@@ -82,8 +82,8 @@ angular.module('leaflet-directive')
     }
   };
 
-  var _addEvents =  function(map, mapEvents, contextName, scope, logic) {
-    leafletIterators.each(mapEvents, function(eventName) {
+  var _addEvents =  function (map, mapEvents, contextName, scope, logic) {
+    leafletIterators.each(mapEvents, function (eventName) {
       var context = {};
       context[contextName] = eventName;
       map.on(eventName, _genDispatchMapEvent(scope, eventName, logic, map._container.id || ''), context);

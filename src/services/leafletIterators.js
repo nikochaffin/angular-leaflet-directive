@@ -1,4 +1,4 @@
-angular.module('leaflet-directive').service('leafletIterators', function($log, leafletHelpers) {
+angular.module('leaflet-directive').service('leafletIterators', function ($log, leafletHelpers) {
 
   var lHlp = leafletHelpers;
   var errorHeader = leafletHelpers.errorHeader + 'leafletIterators: ';
@@ -13,18 +13,18 @@ angular.module('leaflet-directive').service('leafletIterators', function($log, l
   // Related: http://people.mozilla.org/~jorendorff/es6-draft.html#sec-tolength
   var MAX_ARRAY_INDEX = Math.pow(2, 53) - 1;
 
-  var _isArrayLike = function(collection) {
+  var _isArrayLike = function (collection) {
     var length = collection !== null && collection.length;
     return lHlp.isNumber(length) && length >= 0 && length <= MAX_ARRAY_INDEX;
   };
 
   // Keep the identity function around for default iteratees.
-  var _identity = function(value) {
+  var _identity = function (value) {
     return value;
   };
 
-  var _property = function(key) {
-    return function(obj) {
+  var _property = function (key) {
+    return function (obj) {
       return obj === null ? void 0 : obj[key];
     };
   };
@@ -32,33 +32,33 @@ angular.module('leaflet-directive').service('leafletIterators', function($log, l
   // Internal function that returns an efficient (for current engines) version
   // of the passed-in callback, to be repeatedly applied in other Underscore
   // functions.
-  var optimizeCb = function(func, context, argCount) {
+  var optimizeCb = function (func, context, argCount) {
     if (context === void 0) return func;
     switch (argCount === null ? 3 : argCount) {
-      case 1: return function(value) {
+      case 1: return function (value) {
         return func.call(context, value);
       };
 
-      case 2: return function(value, other) {
+      case 2: return function (value, other) {
         return func.call(context, value, other);
       };
 
-      case 3: return function(value, index, collection) {
+      case 3: return function (value, index, collection) {
         return func.call(context, value, index, collection);
       };
 
-      case 4: return function(accumulator, value, index, collection) {
+      case 4: return function (accumulator, value, index, collection) {
         return func.call(context, accumulator, value, index, collection);
       };
     }
-    return function() {
+    return function () {
       return func.apply(context, arguments);
     };
   };
 
   // An internal function for creating assigner functions.
-  var createAssigner = function(keysFunc, undefinedOnly) {
-    return function(obj) {
+  var createAssigner = function (keysFunc, undefinedOnly) {
+    return function (obj) {
       var length = arguments.length;
       if (length < 2 || obj === null) return obj;
       for (var index = 1; index < length; index++) {
@@ -83,7 +83,7 @@ angular.module('leaflet-directive').service('leafletIterators', function($log, l
   _extendOwn = _assign = createAssigner(_keys);
 
   // Returns whether an object has a given set of `key:value` pairs.
-  var _isMatch = function(object, attrs) {
+  var _isMatch = function (object, attrs) {
     var keys = _keys(attrs);
     var length = keys.length;
     if (object === null) return !length;
@@ -100,9 +100,9 @@ angular.module('leaflet-directive').service('leafletIterators', function($log, l
   // `key:value` pairs.
   var _matcher;
   var _matches = null;
-  _matcher = _matches = function(attrs) {
+  _matcher = _matches = function (attrs) {
     attrs = _extendOwn({}, attrs);
-    return function(obj) {
+    return function (obj) {
       return _isMatch(obj, attrs);
     };
   };
@@ -110,7 +110,7 @@ angular.module('leaflet-directive').service('leafletIterators', function($log, l
   // A mostly-internal function to generate callbacks that can be applied
   // to each element in a collection, returning the desired result — either
   // identity, an arbitrary callback, a property matcher, or a property accessor.
-  var cb = function(value, context, argCount) {
+  var cb = function (value, context, argCount) {
     if (value === null) return _identity;
     if (_isFunction(value)) return optimizeCb(value, context, argCount);
     if (_isObject(value)) return _matcher(value);
@@ -119,7 +119,7 @@ angular.module('leaflet-directive').service('leafletIterators', function($log, l
 
   var _every;
   var _all = null;
-  _every = _all = function(obj, predicate, context) {
+  _every = _all = function (obj, predicate, context) {
     predicate = cb(predicate, context);
     var keys = !_isArrayLike(obj) && _keys(obj);
     var length = (keys || obj).length;
@@ -133,7 +133,7 @@ angular.module('leaflet-directive').service('leafletIterators', function($log, l
 
   //END COPY fron underscore
 
-  var _hasErrors = function(collection, cb, ignoreCollection, cbName) {
+  var _hasErrors = function (collection, cb, ignoreCollection, cbName) {
     if (!ignoreCollection) {
       if (!lHlp.isDefined(collection) || !lHlp.isDefined(cb)) {
         return true;
@@ -149,7 +149,7 @@ angular.module('leaflet-directive').service('leafletIterators', function($log, l
     return false;
   };
 
-  var _iterate = function(collection, externalCb, internalCb) {
+  var _iterate = function (collection, externalCb, internalCb) {
     if (_hasErrors(undefined, internalCb, true, 'internalCb')) {
       return;
     }
@@ -165,8 +165,8 @@ angular.module('leaflet-directive').service('leafletIterators', function($log, l
 
   //see http://jsperf.com/iterators/3
   //utilizing for in is way faster
-  var _each = function(collection, cb) {
-    _iterate(collection, cb, function(val, key) {
+  var _each = function (collection, cb) {
+    _iterate(collection, cb, function (val, key) {
       cb(val, key);
     });
   };

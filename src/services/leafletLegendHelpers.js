@@ -1,5 +1,5 @@
-angular.module('leaflet-directive').factory('leafletLegendHelpers', function() {
-  var _updateLegend = function(div, legendData, type, url) {
+angular.module('leaflet-directive').factory('leafletLegendHelpers', function () {
+  var _updateLegend = function (div, legendData, type, url) {
     div.innerHTML = '';
     if (legendData.error) {
       div.innerHTML += '<div class="info-title alert alert-danger">' + legendData.error.message + '</div>';
@@ -21,8 +21,8 @@ angular.module('leaflet-directive').factory('leafletLegendHelpers', function() {
     }
   };
 
-  var _getOnAddLegend = function(legendData, legendClass, type, url) {
-    return function(/*map*/) {
+  var _getOnAddLegend = function (legendData, legendClass, type, url) {
+    return function (/*map*/) {
       var div = L.DomUtil.create('div', legendClass);
 
       if (!L.Browser.touch) {
@@ -37,8 +37,8 @@ angular.module('leaflet-directive').factory('leafletLegendHelpers', function() {
     };
   };
 
-  var _getOnAddArrayLegend = function(legend, legendClass) {
-    return function(/*map*/) {
+  var _getOnAddArrayLegend = function (legend, legendClass) {
+    return function (/*map*/) {
       var div = L.DomUtil.create('div', legendClass);
       for (var i = 0; i < legend.colors.length; i++) {
         div.innerHTML +=

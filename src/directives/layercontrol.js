@@ -1,4 +1,4 @@
-angular.module('leaflet-directive').directive('layercontrol', function($filter, $log, leafletData, leafletHelpers) {
+angular.module('leaflet-directive').directive('layercontrol', function ($filter, $log, leafletData, leafletHelpers) {
 
   return {
     restrict: 'E',
@@ -13,7 +13,7 @@ angular.module('leaflet-directive').directive('layercontrol', function($filter, 
     replace: true,
     transclude: false,
     require: '^leaflet',
-    controller: function($scope, $element, $sce) {
+    controller: function ($scope, $element, $sce) {
       $log.debug('[Angular Directive - Layers] layers', $scope, $element);
       var safeApply = leafletHelpers.safeApply;
       var isDefined = leafletHelpers.isDefined;
@@ -23,11 +23,11 @@ angular.module('leaflet-directive').directive('layercontrol', function($filter, 
         layerProperties: {},
         groupProperties: {},
         rangeIsSupported: leafletHelpers.rangeIsSupported(),
-        changeBaseLayer: function(key, e) {
-          leafletHelpers.safeApply($scope, function(scp) {
+        changeBaseLayer: function (key, e) {
+          leafletHelpers.safeApply($scope, function (scp) {
             scp.baselayer = key;
-            leafletData.getMap().then(function(map) {
-              leafletData.getLayers().then(function(leafletLayers) {
+            leafletData.getMap().then(function (map) {
+              leafletData.getLayers().then(function (leafletLayers) {
                 if (map.hasLayer(leafletLayers.baselayers[key])) {
                   return;
                 }
@@ -48,7 +48,7 @@ angular.module('leaflet-directive').directive('layercontrol', function($filter, 
           e.preventDefault();
         },
 
-        moveLayer: function(ly, newIndex, e) {
+        moveLayer: function (ly, newIndex, e) {
           var delta = Object.keys($scope.layers.baselayers).length;
           if (newIndex >= (1 + delta) && newIndex <= ($scope.overlaysArray.length + delta)) {
             var oldLy;
@@ -60,7 +60,7 @@ angular.module('leaflet-directive').directive('layercontrol', function($filter, 
             }
 
             if (oldLy) {
-              safeApply($scope, function() {
+              safeApply($scope, function () {
                 oldLy.index = ly.index;
                 ly.index = newIndex;
               });
@@ -71,16 +71,16 @@ angular.module('leaflet-directive').directive('layercontrol', function($filter, 
           e.preventDefault();
         },
 
-        initIndex: function(layer, idx) {
+        initIndex: function (layer, idx) {
           var delta = Object.keys($scope.layers.baselayers).length;
           layer.index = isDefined(layer.index) ? layer.index : idx + delta + 1;
         },
 
-        initGroup: function(groupName) {
+        initGroup: function (groupName) {
           $scope.groupProperties[groupName] = $scope.groupProperties[groupName] ? $scope.groupProperties[groupName] : {};
         },
 
-        toggleOpacity: function(e, layer) {
+        toggleOpacity: function (e, layer) {
           if (layer.visible) {
             if ($scope.autoHideOpacity && !$scope.layerProperties[layer.name].opacityControl) {
               for (var k in $scope.layerProperties) {
@@ -95,30 +95,30 @@ angular.module('leaflet-directive').directive('layercontrol', function($filter, 
           e.preventDefault();
         },
 
-        toggleLegend: function(layer) {
+        toggleLegend: function (layer) {
           $scope.layerProperties[layer.name].showLegend = !$scope.layerProperties[layer.name].showLegend;
         },
 
-        showLegend: function(layer) {
+        showLegend: function (layer) {
           return layer.legend && $scope.layerProperties[layer.name].showLegend;
         },
 
-        unsafeHTML: function(html) {
+        unsafeHTML: function (html) {
           return $sce.trustAsHtml(html);
         },
 
-        getOpacityIcon: function(layer) {
+        getOpacityIcon: function (layer) {
           return layer.visible && $scope.layerProperties[layer.name].opacityControl ? $scope.icons.close : $scope.icons.open;
         },
 
-        getGroupIcon: function(group) {
+        getGroupIcon: function (group) {
           return group.visible ? $scope.icons.check : $scope.icons.uncheck;
         },
 
-        changeOpacity: function(layer) {
+        changeOpacity: function (layer) {
           var op = $scope.layerProperties[layer.name].opacity;
-          leafletData.getMap().then(function(map) {
-            leafletData.getLayers().then(function(leafletLayers) {
+          leafletData.getMap().then(function (map) {
+            leafletData.getLayers().then(function (leafletLayers) {
               var ly;
               for (var k in $scope.layers.overlays) {
                 if ($scope.layers.overlays[k] === layer) {
@@ -133,7 +133,7 @@ angular.module('leaflet-directive').directive('layercontrol', function($filter, 
                 }
 
                 if (ly.getLayers && ly.eachLayer) {
-                  ly.eachLayer(function(lay) {
+                  ly.eachLayer(function (lay) {
                     if (lay.setOpacity) {
                       lay.setOpacity(op / 100);
                     }
@@ -144,7 +144,7 @@ angular.module('leaflet-directive').directive('layercontrol', function($filter, 
           });
         },
 
-        changeGroupVisibility: function(groupName) {
+        changeGroupVisibility: function (groupName) {
           if (!isDefined($scope.groupProperties[groupName])) {
             return;
           }
@@ -215,12 +215,12 @@ angular.module('leaflet-directive').directive('layercontrol', function($filter, 
             '</div>' +
         '</div>' +
     '</div>',
-    link: function(scope, element, attrs, controller) {
+    link: function (scope, element, attrs, controller) {
       var isDefined = leafletHelpers.isDefined;
       var leafletScope = controller.getLeafletScope();
       var layers = leafletScope.layers;
 
-      scope.$watch('icons', function() {
+      scope.$watch('icons', function () {
         var defaultIcons = {
           uncheck: 'fa fa-square-o',
           check: 'fa fa-check-square-o',
@@ -246,10 +246,10 @@ angular.module('leaflet-directive').directive('layercontrol', function($filter, 
       scope.orderNumber = attrs.order === 'normal' ? -1 : 1;
 
       scope.layers = layers;
-      controller.getMap().then(function(map) {
-        leafletScope.$watch('layers.baselayers', function(newBaseLayers) {
+      controller.getMap().then(function (map) {
+        leafletScope.$watch('layers.baselayers', function (newBaseLayers) {
           var baselayersArray = {};
-          leafletData.getLayers().then(function(leafletLayers) {
+          leafletData.getLayers().then(function (leafletLayers) {
             var key;
             for (key in newBaseLayers) {
               var layer = newBaseLayers[key];
@@ -261,10 +261,10 @@ angular.module('leaflet-directive').directive('layercontrol', function($filter, 
           });
         });
 
-        leafletScope.$watch('layers.overlays', function(newOverlayLayers) {
+        leafletScope.$watch('layers.overlays', function (newOverlayLayers) {
           var overlaysArray = [];
           var groupVisibleCount = {};
-          leafletData.getLayers().then(function(leafletLayers) {
+          leafletData.getLayers().then(function (leafletLayers) {
             var key;
             for (key in newOverlayLayers) {
               var layer = newOverlayLayers[key];
